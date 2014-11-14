@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo i2cset -r -y 1 0x17 0xf0 0x03 b 
+NEW_VALUE=$(( ( (($(sudo i2cget -y 1 0x17 0x18) & 0x7f) << 4) + ($(sudo i2cget -y 1 0x17 0x17) >> 4) +1) )) 
+sudo i2cset -r -y -m 0x7f 1 0x17 0x18 $((NEW_VALUE >> 4))
+sudo i2cset -r -y -m 0xf0 1 0x17 0x17 $(( (NEW_VALUE & 0x00F) << 4))
