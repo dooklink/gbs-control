@@ -1,4 +1,3 @@
-
 #!/bin/ash
 # Install script for Trueview 5725 control (GBS8200, GBS8220, HD9000, HD Box Pro etc)
 
