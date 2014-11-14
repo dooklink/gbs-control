@@ -34,6 +34,7 @@ echo -e "\nApply patch to .profile for bootup scripts:"
 sudo patch -bN $DIR/.profile $DIR/scripts/patch.profile
 
 # Replace config.txt to ensure booting with composite.
+echo -e "\nReplace /boot/config.txt for Luma output settings:"
 sudo cp /boot/config.txt /boot/config.txt.bak
 sudo rm /boot/config.txt
 sudo cp $DIR/scripts/config.txt /boot/config.txt
