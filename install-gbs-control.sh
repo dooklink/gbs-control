@@ -18,6 +18,9 @@ wget https://raw.githubusercontent.com/dooklink/gbs-control/latest/gbs-control.z
 echo -e "\nUnpacking zip package:"
 unzip -oq $DIR/gbs-control.zip
 
+echo -e "\nRemove zip package:"
+rm $DIR/gbs-control.zip
+
 # Patch /etc/inittab to allow for automatic login 
 # and to use xterm-mono for B&W (monochrome) interactive terminal.
 echo -e "\nApply patch to /etc/inittab for auto login and monochrome terminal:"
