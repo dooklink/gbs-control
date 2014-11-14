@@ -10,8 +10,7 @@
 -4:23:respawn:/sbin/getty 38400 tty4
 -5:23:respawn:/sbin/getty 38400 tty5
 -6:23:respawn:/sbin/getty 38400 tty6
-+1:2345:respawn:/bin/login -f pi tty1 xterm-mono </dev/tty1 >/dev/tty1 2>&1
-+#1:2345:respawn:/sbin/getty --noclear 38400 tty1
++1:2345:respawn:/sbin/getty -a pi --noclear 38400 tty1 xterm-mono
 +2:23:respawn:/sbin/getty 38400 tty2 xterm-mono
 +3:23:respawn:/sbin/getty 38400 tty3 xterm-mono
 +4:23:respawn:/sbin/getty 38400 tty4 xterm-mono
