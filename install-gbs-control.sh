@@ -21,7 +21,7 @@ unzip -oq $DIR/gbs-control.zip
 echo -e "\nRemove zip package:"
 rm $DIR/gbs-control.zip
 
-# Patch /etc/inittab to allow for automatic login 
+# Patch /etc/inittab to allow for automatic login.
 # and to use xterm-mono for B&W (monochrome) interactive terminal.
 echo -e "\nApply patch to /etc/inittab for auto login and monochrome terminal:"
 sudo patch -bN /etc/inittab $DIR/scripts/patch.inittab
@@ -32,6 +32,11 @@ sudo patch -bN /etc/inittab $DIR/scripts/patch.inittab
 # Add required scripts for automatic start-up.
 echo -e "\nApply patch to .profile for bootup scripts:"
 sudo patch -bN $DIR/.profile $DIR/scripts/patch.profile
+
+# Replace config.txt to ensure booting with composite.
+sudo cp /boot/config.txt /boot/config.txt.bak
+sudo rm /boot/config.txt
+sudo cp $DIR/scripts/config.txt /boot/config.txt
 
 # Reboot
 echo -e "\nNow rebooting system"
