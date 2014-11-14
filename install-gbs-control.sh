@@ -21,13 +21,14 @@ unzip -oq $DIR/gbs-control.zip
 # Patch /etc/inittab to allow for automatic login 
 # and to use xterm-mono for B&W (monochrome) interactive terminal.
 echo -e "\nApply patch to /etc/inittab for auto login and monochrome terminal:"
-sudo patch -bN /etc/inittab $DIR/scripts/inittab.patch
+sudo patch -bN /etc/inittab $DIR/scripts/patch.inittab
 
 # Move Triggerhappy conf files to /etc/triggerhappy/
 #cp thd/* /etc/triggerhappy/triggers.d/*
 
 # Add required scripts for automatic start-up.
-#patch -b /etc/profile profile.patch
+echo -e "\nApply patch to .profile for bootup scripts:"
+sudo patch -bN $DIR/.profile $DIR/scripts/patch.profile
 
 # Reboot
 echo -e "\nNow rebooting system"
