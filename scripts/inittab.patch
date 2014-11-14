@@ -1,0 +1,22 @@
+--- inittab.bak	2014-11-13 19:04:34.669407000 +1000
++++ inittab	2014-11-13 19:08:24.659407000 +1000
+@@ -51,12 +51,13 @@
+ # Note that on most Debian systems tty7 is used by the X Window System,
+ # so if you want to add more getty's go ahead but skip tty7 if you run X.
+ #
+-1:2345:respawn:/sbin/getty --noclear 38400 tty1 
+-2:23:respawn:/sbin/getty 38400 tty2
+-3:23:respawn:/sbin/getty 38400 tty3
+-4:23:respawn:/sbin/getty 38400 tty4
+-5:23:respawn:/sbin/getty 38400 tty5
+-6:23:respawn:/sbin/getty 38400 tty6
++1:2345:respawn:/bin/login -f pi tty1 xterm-mono </dev/tty1 >/dev/tty1 2>&1
++#1:2345:respawn:/sbin/getty --noclear 38400 tty1
++2:23:respawn:/sbin/getty 38400 tty2 xterm-mono
++3:23:respawn:/sbin/getty 38400 tty3 xterm-mono
++4:23:respawn:/sbin/getty 38400 tty4 xterm-mono
++5:23:respawn:/sbin/getty 38400 tty5 xterm-mono
++6:23:respawn:/sbin/getty 38400 tty6 xterm-mono
+ 
+ # Example how to put a getty on a serial line (for a terminal)
+ #
