@@ -10,7 +10,7 @@ cd ~/
 wget https://raw.githubusercontent.com/dooklink/gbs-control/latest/gbs-control.zip
 
 # Unpack scripts & default settings
-unzip -o gbs-control-latest.zip
+unzip -o ~/gbs-control.zip
 
 # Patch /etc/inittab to allow for automatic login 
 # and to use xterm-mono for B&W (monochrome) interactive terminal.
