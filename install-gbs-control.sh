@@ -38,7 +38,7 @@ cp thd/* /etc/triggerhappy/triggers.d/*
 
 # Add required scripts for automatic start-up.
 echo -e "\nApply patch to .profile for bootup scripts:"
-sudo patch -bN $DIR/.profile $DIR/scripts/patch.profile
+patch -bN $DIR/.profile $DIR/scripts/patch.profile
 
 # Replace config.txt to ensure booting with composite.
 echo -e "\nReplace /boot/config.txt for Luma output settings:"
