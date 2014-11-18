@@ -1,0 +1,8 @@
+--- modules	2014-11-18 14:20:24.598917197 +1000
++++ modules.new	2014-11-18 14:20:11.589336314 +1000
+@@ -5,3 +5,5 @@
+ # Parameters can be specified after the module name.
+ 
+ snd-bcm2835
++i2c-bcm2708
++i2c-dev

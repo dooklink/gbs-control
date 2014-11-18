@@ -26,8 +26,15 @@ rm $DIR/gbs-control.zip
 echo -e "\nApply patch to /etc/inittab for auto login and monochrome terminal:"
 sudo patch -bN /etc/inittab $DIR/scripts/patch.inittab
 
-# Move Triggerhappy conf files to /etc/triggerhappy/
-#cp thd/* /etc/triggerhappy/triggers.d/*
+# Patch /etc/modules & /etc/modprobe.d/raspi-blacklist.conf for i2c use
+echo -e "\nApply patch to /etc/modules for kernal i2c modules:"
+sudo patch -bN /etc/modules $DIR/scripts/patch.modules
+echo -e "\nApply patch to /etc/modprobe.d/raspi-blacklist.conf to allow i2c use:"
+sudo patch -bN /etc/modprobe.d/raspi-blacklist.conf $DIR/scripts/patch.raspi-blacklist.conf
+
+# Move triggerhappy files to /etc/triggerhappy/
+echo -e "\nCopy triggerhappy hotkey conf files:"
+cp thd/* /etc/triggerhappy/triggers.d/*
 
 # Add required scripts for automatic start-up.
 echo -e "\nApply patch to .profile for bootup scripts:"

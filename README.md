@@ -26,4 +26,20 @@ Other tweaks can be make with the keyboard hotkeys.
 ================
 Hotkeys
 
-todo!
+Navigation:
+
+F1	-	Switch to Pi RGBHV 480p Menu
+F2	-	Switch to Currently loaded settings
+F5	-	Save current register settings to temp file (needed before menu save)
+
+Fine adjustments:
+
+W	-	Increase vertical scale (if enabled)
+S	-	Decrease vertical scale (if enabled)
+A	-	Decrease horizontal scale
+D	-	Increase horizontal scale
+
+I	-	Move image up
+J	-	Move image down
+K	-	Move image left
+L	-	Move image right

@@ -23,15 +23,6 @@ calc_wt_size() {
   WT_MENU_HEIGHT=$(($WT_HEIGHT-8))
 }
 
-#
-#
-do_prog_rgb_ntsc_640x480() {
-	sudo cp -f settings/defaults/NTSC-640x480@60Hz.set settings/defaults/current.set >> log.txt 2>&1
-}
-
-do_prog_rgb_ntsc_800x600() {
-	sudo cp -f settings/defaults/NTSC-800x600@60Hz.set settings/defaults/current.set >> log.txt 2>&1
-}
 
 folder_scripts () {
   cd scripts
@@ -43,7 +34,7 @@ do_script() {
    
   # Create a list of files to display
   folder_scripts
-  fileList=$(find ./ -maxdepth 1 -type f)
+  fileList=$(find ./ -maxdepth 1 -type f | sort)
   cd ..
    
   # Show a menu and ask for input. If the user entered a valid choice,
@@ -237,36 +228,36 @@ do_set_Vds_ext_vb_sp() {
 do_output_geometry_menu() {
 while true; do
   FUN=$(whiptail --title "Rasberry Pi GB8200 / GBS8220 Controller" --menu "Output Geometry" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
-    "4.1 Set Vds_hb_st" "Set Horizontal Left Offset" \
-	"4.2 Set Vds_hb_sp" "Set Horizontal Width" \
-	"4.3 Set Vds_vb_st" "Set Vertical Top Offset" \
-	"4.4 Set Vds_vb_sp" "Set Vertical Length" \
-    "4.5 Set Vds_hs_st" "Set Horizontal sync start position" \
-	"4.6 Set Vds_hs_sp" "Set Horizontal sync stop position " \
-	"4.7 Set Vds_vs_st" "Set Vertical sync start position" \
-	"4.8 Set Vds_vs_sp" "Set Vertical sync stop position" \
-	"4.9 Set Vds_dis_hb_st" "Set Horizontal blanking start position" \
-	"4.10 Set Vds_dis_hb_sp" "Set Horizontal blanking stop position" \
-	"4.11 Set Vds_dis_vb_st" "Set Vertical blanking start position" \
-	"4.12 Set Vds_dis_vb_sp" "Set Vertical blanking stop position" \
+    "1.1 Set Vds_hb_st" "Set Horizontal Left Offset" \
+	"1.2 Set Vds_hb_sp" "Set Horizontal Width" \
+	"1.3 Set Vds_vb_st" "Set Vertical Top Offset" \
+	"1.4 Set Vds_vb_sp" "Set Vertical Length" \
+    "1.5 Set Vds_hs_st" "Set Horizontal sync start position" \
+	"1.6 Set Vds_hs_sp" "Set Horizontal sync stop position " \
+	"1.7 Set Vds_vs_st" "Set Vertical sync start position" \
+	"1.8 Set Vds_vs_sp" "Set Vertical sync stop position" \
+	"1.9 Set Vds_dis_hb_st" "Set Horizontal blanking start position" \
+	"1.10 Set Vds_dis_hb_sp" "Set Horizontal blanking stop position" \
+	"1.11 Set Vds_dis_vb_st" "Set Vertical blanking start position" \
+	"1.12 Set Vds_dis_vb_sp" "Set Vertical blanking stop position" \
     3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
     return 0
   elif [ $RET -eq 0 ]; then
     case "$FUN" in
-      4.1\ *) do_set_Vds_hb_st ;;
-	  4.2\ *) do_set_Vds_hb_sp ;;
-	  4.3\ *) do_set_Vds_vb_st ;;
-	  4.4\ *) do_set_Vds_vb_sp ;;
-	  4.5\ *) do_set_Vds_hs_st ;;
-	  4.6\ *) do_set_Vds_hs_sp ;;
-	  4.7\ *) do_set_Vds_vs_st ;;
-	  4.8\ *) do_set_Vds_vs_sp ;;
-	  4.9\ *) do_set_Vds_dis_hb_st ;;
-	  4.10\ *) do_set_Vds_dis_hb_sp ;;
-	  4.11\ *) do_set_Vds_dis_vb_st ;;
-	  4.12\ *) do_set_Vds_dis_vb_sp ;;
+      1.1\ *) do_set_Vds_hb_st ;;
+	  1.2\ *) do_set_Vds_hb_sp ;;
+	  1.3\ *) do_set_Vds_vb_st ;;
+	  1.4\ *) do_set_Vds_vb_sp ;;
+	  1.5\ *) do_set_Vds_hs_st ;;
+	  1.6\ *) do_set_Vds_hs_sp ;;
+	  1.7\ *) do_set_Vds_vs_st ;;
+	  1.8\ *) do_set_Vds_vs_sp ;;
+	  1.9\ *) do_set_Vds_dis_hb_st ;;
+	  1.10\ *) do_set_Vds_dis_hb_sp ;;
+	  1.11\ *) do_set_Vds_dis_vb_st ;;
+	  1.12\ *) do_set_Vds_dis_vb_sp ;;
       *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   fi
@@ -298,16 +289,16 @@ do_set_Sp_post_coast() {
 do_input_capture_menu() {
 while true; do
   FUN=$(whiptail --title "Rasberry Pi GB8200 / GBS8220 Controller" --menu "Input Sync Capture" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
-	"5.1 Set Sp_pre_coast" "Set the coast start point before vertical sync line number" \
-	"5.2 Set Sp_post_coast" "Set when coast will disable (return to normal PLL function)" \
+	"2.1 Set Sp_pre_coast" "Set the coast start point before vertical sync line number" \
+	"2.2 Set Sp_post_coast" "Set when coast will disable (return to normal PLL function)" \
     3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
     return 0
   elif [ $RET -eq 0 ]; then
     case "$FUN" in
-      5.1\ *) do_set_Sp_pre_coast ;;
-	  5.2\ *) do_set_Sp_post_coast ;;
+      2.1\ *) do_set_Sp_pre_coast ;;
+	  2.2\ *) do_set_Sp_post_coast ;;
       *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   fi
@@ -341,16 +332,16 @@ do_set_Vds_hscale() {
 do_hv_scalling_menu() {
 while true; do
   FUN=$(whiptail --title "Rasberry Pi GB8200 / GBS8220 Controller" --menu "H/V Scalling" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
-	"6.1 Set Vds_hscale" "Set horizontal scalling" \
-	"6.2 Set Vds_vscale" "Set vertical scalling" \
+	"3.1 Set Vds_hscale" "Set horizontal scalling" \
+	"3.2 Set Vds_vscale" "Set vertical scalling" \
     3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
     return 0
   elif [ $RET -eq 0 ]; then
     case "$FUN" in
-      6.1\ *) do_set_Vds_hscale ;;
-	  6.2\ *) do_set_Vds_vscale ;;
+      3.1\ *) do_set_Vds_hscale ;;
+	  3.2\ *) do_set_Vds_vscale ;;
       *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   fi
@@ -376,11 +367,11 @@ do_load() {
    
   # Create a list of files to display
   folder_settings
-  fileList=$(find ./ -maxdepth 1 -type f)
+  fileList=$(find ./ -maxdepth 1 -type f | sort)
   cd ..
    
   # Show a menu and ask for input. If the user entered a valid choice,
-  # then invoke the editor on that file
+  # then copy file to current settings cache
   select fileName in $fileList; do
   if [ -n "$fileName" ]; then
     sudo cp -f settings/$fileName settings/defaults/current.set >> log.txt 2>&1
@@ -408,28 +399,22 @@ fi
 calc_wt_size
 while true; do
   FUN=$(whiptail --title "Rasberry Pi GB8200 / GBS8220 Controller" --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
-	"1 Set RGB NTSC 640x480" "For RGB 50/60Hz input" \
-	"2 Set RGB NTSC 800x600" "For RGB 50/60Hz input" \
-	"3 Run Scripts" "These may have pre-requisites" \
-	"4 Geometry" "Shift output image and blanking" \
-	"5 Coast" "Input sync & sampling settings" \
-	"6 H/V Scalling" "Change output canvas scalling" \
-	"7 Save Settings" "Save current settings to file" \
-	"8 Load Settings" "Load previous settings from file"\
+	"1 Geometry" "Shift output image and blanking" \
+	"2 Coast" "Input sync & sampling settings" \
+	"3 H/V Scalling" "Change output canvas scalling" \
+	"4 Save Settings" "Save current settings to file" \
+	"5 Load Settings" "Load previous settings from file"\
     3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
     do_finish
   elif [ $RET -eq 0 ]; then
     case "$FUN" in
-      1\ *) do_prog_rgb_ntsc_640x480 ;;
-	  2\ *) do_prog_rgb_ntsc_800x600 ;;
-	  3\ *) do_script ;;
-	  4\ *) do_output_geometry_menu ;;
-	  5\ *) do_input_capture_menu ;;
-	  6\ *) do_hv_scalling_menu ;;
-	  7\ *) do_save ;;
-	  8\ *) do_load ;;
+	  1\ *) do_output_geometry_menu ;;
+	  2\ *) do_input_capture_menu ;;
+	  3\ *) do_hv_scalling_menu ;;
+	  4\ *) do_save ;;
+	  5\ *) do_load ;;
       *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   else
