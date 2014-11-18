@@ -28,18 +28,23 @@ Hotkeys
 
 Navigation:
 
-F1	-	Switch to Pi RGBHV 480p Menu
+F1	-	Switch to Pi Menu
 F2	-	Switch to Currently loaded settings
-F5	-	Save current register settings to temp file (needed before menu save)
+F4	-	Save current register settings to temp file (needed before menu save)
+
+Grave/Tilde(`/~)+1 - Switch menu to RGBHV 480p (VGA)
+Grave/Tilde(`/~)+2 - Switch menu to YPbPr 480p
+Grave/Tilde(`/~)+3 - Switch menu to RGBHV 576p (Non-standard)
+Grave/Tilde(`/~)+4 - Switch menu to YPbPr 576p
 
 Fine adjustments:
 
-W	-	Increase vertical scale (if enabled)
-S	-	Decrease vertical scale (if enabled)
-A	-	Decrease horizontal scale
-D	-	Increase horizontal scale
+CTRL+1	-	Increase vertical scale (if enabled)
+CTRL+2	-	Decrease vertical scale (if enabled)
+CTRL+3	-	Decrease horizontal scale
+CTRL+4	-	Increase horizontal scale
 
-I	-	Move image up
-J	-	Move image down
-K	-	Move image left
-L	-	Move image right
+CTRL+5	-	Move image up
+CTRL+6	-	Move image down
+CTRL+7	-	Move image left
+CTRL+8	-	Move image CTRL
