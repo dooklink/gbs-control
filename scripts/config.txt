@@ -3,10 +3,10 @@
 
 sdtv_mode=2
 sdtv_disable_colourburst=1
-overscan_left=24
-overscan_right=24
-overscan_top=16
-overscan_bottom=16
+overscan_left=30
+overscan_right=30
+overscan_top=44
+overscan_bottom=44
 disable_overscan=0
 
 ################################################################################
