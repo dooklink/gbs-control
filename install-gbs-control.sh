@@ -34,7 +34,7 @@ sudo patch -bN /etc/modprobe.d/raspi-blacklist.conf $DIR/scripts/patch.raspi-bla
 
 # Move triggerhappy files to /etc/triggerhappy/
 echo -e "\nCopy triggerhappy hotkey conf files:"
-cp thd/* /etc/triggerhappy/triggers.d/
+sudo cp thd/* /etc/triggerhappy/triggers.d/
 
 # Add required scripts for automatic start-up.
 echo -e "\nApply patch to .profile for bootup scripts:"
