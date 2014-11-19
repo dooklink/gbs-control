@@ -32,7 +32,9 @@ F1	-	Switch to Pi Menu
 
 F2	-	Switch to Currently loaded settings
 
-F4	-	Save current register settings to temp file (needed before menu save)
+F5  -   Quick save settings
+
+F7  -   Quick load settings
 
 Grave/Tilde(`/~)+1 - Switch menu to RGBHV 480p (VGA)
 

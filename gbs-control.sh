@@ -28,202 +28,165 @@ folder_scripts () {
   cd scripts
 }
 
-do_script() {
-  # Set the prompt for the select command
-  PS3="Type a number or 'q' to quit: "
-   
-  # Create a list of files to display
-  folder_scripts
-  fileList=$(find ./ -maxdepth 1 -type f | sort)
-  cd ..
-   
-  # Show a menu and ask for input. If the user entered a valid choice,
-  # then invoke the editor on that file
-  select fileName in $fileList; do
-  if [ -n "$fileName" ]; then
-    sudo "scripts/"$fileName >> log.txt 2>&1
-  fi
-  break
-  done
-}
 
 #
 #
 do_set_Vds_hb_st() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x05) & 0x0f) << 8) + $(sudo i2cget -y 1 0x17 0x04) ))
+  LOW=$(sed -n 773p settings/defaults/current.set)
+  HIGH=$(sed -n 774p settings/defaults/current.set)
+  CURRENT_VALUE=$(( (( $HIGH & 0x0f) << 8) + $LOW ))
   NEW_VALUE=$(whiptail --inputbox "Enter Hblank Start (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x0f 1 0x17 0x05 $((NEW_VALUE >> 8))
-	sudo i2cset -r -y -m 0xff 1 0x17 0x04 $((NEW_VALUE & 0xFF))
+    HIGH=$(( ((NEW_VALUE >> 8) & 0x0f) + ($HIGH & 0xf0) ))
+	LOW=$((NEW_VALUE & 0xff))
+    sed -i 773c\\$LOW settings/defaults/current.set
+	sed -i 774c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_hb_sp() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( ($(sudo i2cget -y 1 0x17 0x06) << 4) + ($(sudo i2cget -y 1 0x17 0x05) >> 4) ))
+  LOW=$(sed -n '774p' settings/defaults/current.set)
+  HIGH=$(sed -n '775p' settings/defaults/current.set)
+  CURRENT_VALUE=$(( ($HIGH << 4) + ($LOW >> 4) ))
   NEW_VALUE=$(whiptail --inputbox "Enter Hblank Stop (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0xff 1 0x17 0x06 $((NEW_VALUE >> 4))
-	sudo i2cset -r -y -m 0xf0 1 0x17 0x05 $(( (NEW_VALUE & 0x00F) << 4))
+    HIGH=$(( NEW_VALUE >> 4 ))
+	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+    sed -i 774c\\$LOW settings/defaults/current.set
+	sed -i 775c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_vb_st() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x08) & 0x07) << 8) + $(sudo i2cget -y 1 0x17 0x07) ))
+  LOW=$(sed -n 776p settings/defaults/current.set)
+  HIGH=$(sed -n 777p settings/defaults/current.set)
+  CURRENT_VALUE=$(( (( $HIGH & 0x07) << 8) + $LOW ))
   NEW_VALUE=$(whiptail --inputbox "Enter Vblank Start (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x07 1 0x17 0x08 $((NEW_VALUE >> 8))
-	sudo i2cset -r -y -m 0xff 1 0x17 0x07 $((NEW_VALUE & 0xFF))
+    HIGH=$(( ((NEW_VALUE >> 8) & 0x07) + ($HIGH & 0xf8) ))
+	LOW=$((NEW_VALUE & 0xff))
+    sed -i 776c\\$LOW settings/defaults/current.set
+	sed -i 777c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_vb_sp() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x09) & 0x7f) << 4) + ($(sudo i2cget -y 1 0x17 0x08) >> 4) ))
+  LOW=$(sed -n '777p' settings/defaults/current.set)
+  HIGH=$(sed -n '778p' settings/defaults/current.set)
+  CURRENT_VALUE=$(( (($HIGH & 0x7f) << 4) + ($LOW >> 4) ))
   NEW_VALUE=$(whiptail --inputbox "Enter Vblank Stop (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x7f 1 0x17 0x09 $((NEW_VALUE >> 4))
-	sudo i2cset -r -y -m 0xf0 1 0x17 0x08 $(( (NEW_VALUE & 0x00F) << 4))
+    HIGH=$(( ((NEW_VALUE >> 4) & 0x7f) + ($HIGH & 0x80) ))
+	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+    sed -i 777c\\$LOW settings/defaults/current.set
+	sed -i 778c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_hs_st() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x0b) & 0x0f) << 8) + $(sudo i2cget -y 1 0x17 0x0a) ))
+  LOW=$(sed -n 779p settings/defaults/current.set)
+  HIGH=$(sed -n 780p settings/defaults/current.set)
+  CURRENT_VALUE=$(( (( $HIGH & 0x0f) << 8) + $LOW ))
   NEW_VALUE=$(whiptail --inputbox "Enter Hsync Start (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x0f 1 0x17 0x0b $((NEW_VALUE >> 8))
-	sudo i2cset -r -y -m 0xff 1 0x17 0x0a $((NEW_VALUE & 0xFF))
+    HIGH=$(( ((NEW_VALUE >> 8) & 0x0f) + ($HIGH & 0xf0) ))
+	LOW=$((NEW_VALUE & 0xff))
+    sed -i 779c\\$LOW settings/defaults/current.set
+	sed -i 780c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_hs_sp() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( ($(sudo i2cget -y 1 0x17 0x0c) << 4) + ($(sudo i2cget -y 1 0x17 0x0b) >> 4) ))
+  LOW=$(sed -n '780p' settings/defaults/current.set)
+  HIGH=$(sed -n '781p' settings/defaults/current.set)
+  CURRENT_VALUE=$(( ($HIGH << 4) + ($LOW >> 4) ))
   NEW_VALUE=$(whiptail --inputbox "Enter Hsync Stop (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0xff 1 0x17 0x0c $((NEW_VALUE >> 4))
-	sudo i2cset -r -y -m 0xf0 1 0x17 0x0b $(( (NEW_VALUE & 0x00F) << 4))
+    HIGH=$(( NEW_VALUE >> 4 ))
+	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+    sed -i 780c\\$LOW settings/defaults/current.set
+	sed -i 781c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_vs_st() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x0e) & 0x07) << 8) + $(sudo i2cget -y 1 0x17 0x0d) ))
+  LOW=$(sed -n 782p settings/defaults/current.set)
+  HIGH=$(sed -n 783p settings/defaults/current.set)
+  CURRENT_VALUE=$(( (( $HIGH & 0x07) << 8) + $LOW ))
   NEW_VALUE=$(whiptail --inputbox "Enter Vsync Start (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x07 1 0x17 0x0e $((NEW_VALUE >> 8))
-	sudo i2cset -r -y -m 0xff 1 0x17 0x0d $((NEW_VALUE & 0xFF))
+    HIGH=$(( ((NEW_VALUE >> 8) & 0x07) + ($HIGH & 0xf8) ))
+	LOW=$((NEW_VALUE & 0xff))
+    sed -i 782c\\$LOW settings/defaults/current.set
+	sed -i 783c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_vs_sp() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x0f) & 0x7f) << 4) + ($(sudo i2cget -y 1 0x17 0x0e) >> 4) ))
+  LOW=$(sed -n '783p' settings/defaults/current.set)
+  HIGH=$(sed -n '784p' settings/defaults/current.set)
+  CURRENT_VALUE=$(( (($HIGH & 0x7f) << 4) + ($LOW >> 4) ))
   NEW_VALUE=$(whiptail --inputbox "Enter Vsync Stop (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x7f 1 0x17 0x0f $((NEW_VALUE >> 4))
-	sudo i2cset -r -y -m 0xf0 1 0x17 0x0e $(( (NEW_VALUE & 0x00F) << 4))
+    HIGH=$(( ((NEW_VALUE >> 4) & 0x7f) + ($HIGH & 0x80) ))
+	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+    sed -i 783c\\$LOW settings/defaults/current.set
+	sed -i 784c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_dis_hb_st() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x11) & 0x0f) << 8) + $(sudo i2cget -y 1 0x17 0x10) ))
+  LOW=$(sed -n 785p settings/defaults/current.set)
+  HIGH=$(sed -n 786p settings/defaults/current.set)
+  CURRENT_VALUE=$(( (( $HIGH & 0x0f) << 8) + $LOW ))
   NEW_VALUE=$(whiptail --inputbox "Enter Hblank Start (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x0f 1 0x17 0x11 $((NEW_VALUE >> 8))
-	sudo i2cset -r -y -m 0xff 1 0x17 0x10 $((NEW_VALUE & 0xFF))
+    HIGH=$(( ((NEW_VALUE >> 8) & 0x0f) + ($HIGH & 0xf0) ))
+	LOW=$((NEW_VALUE & 0xff))
+    sed -i 785c\\$LOW settings/defaults/current.set
+	sed -i 786c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_dis_hb_sp() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( ($(sudo i2cget -y 1 0x17 0x12) << 4) + ($(sudo i2cget -y 1 0x17 0x11) >> 4) ))
+  LOW=$(sed -n '786p' settings/defaults/current.set)
+  HIGH=$(sed -n '787p' settings/defaults/current.set)
+  CURRENT_VALUE=$(( ($HIGH << 4) + ($LOW >> 4) ))
   NEW_VALUE=$(whiptail --inputbox "Enter Hblank Stop (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0xff 1 0x17 0x12 $((NEW_VALUE >> 4))
-	sudo i2cset -r -y -m 0xf0 1 0x17 0x11 $(( (NEW_VALUE & 0x00F) << 4))
+    HIGH=$(( NEW_VALUE >> 4 ))
+	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+    sed -i 786c\\$LOW settings/defaults/current.set
+	sed -i 787c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_dis_vb_st() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x14) & 0x07) << 8) + $(sudo i2cget -y 1 0x17 0x13) ))
+  LOW=$(sed -n 788p settings/defaults/current.set)
+  HIGH=$(sed -n 789p settings/defaults/current.set)
+  CURRENT_VALUE=$(( (( $HIGH & 0x07) << 8) + $LOW ))
   NEW_VALUE=$(whiptail --inputbox "Enter Vblank Start (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x07 1 0x17 0x14 $((NEW_VALUE >> 8))
-	sudo i2cset -r -y -m 0xff 1 0x17 0x13 $((NEW_VALUE & 0xFF))
+    HIGH=$(( ((NEW_VALUE >> 8) & 0x07) + ($HIGH & 0xf8) ))
+	LOW=$((NEW_VALUE & 0xff))
+    sed -i 788c\\$LOW settings/defaults/current.set
+	sed -i 789c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_dis_vb_sp() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x15) & 0x7f) << 4) + ($(sudo i2cget -y 1 0x17 0x14) >> 4) ))
+  LOW=$(sed -n '789p' settings/defaults/current.set)
+  HIGH=$(sed -n '790p' settings/defaults/current.set)
+  CURRENT_VALUE=$(( (($HIGH & 0x7f) << 4) + ($LOW >> 4) ))
   NEW_VALUE=$(whiptail --inputbox "Enter Vblank Stop (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x7f 1 0x17 0x15 $((NEW_VALUE >> 4))
-	sudo i2cset -r -y -m 0xf0 1 0x17 0x14 $(( (NEW_VALUE & 0x00F) << 4))
+    HIGH=$(( ((NEW_VALUE >> 4) & 0x7f) + ($HIGH & 0x80) ))
+	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+    sed -i 789c\\$LOW settings/defaults/current.set
+	sed -i 790c\\$HIGH settings/defaults/current.set
   fi
 }
 
-do_set_Vds_ext_hb_st() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x6e) & 0x0f) << 8) + $(sudo i2cget -y 1 0x17 0x6d) ))
-  NEW_VALUE=$(whiptail --inputbox "Enter Hblank Start (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
-  if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x0f 1 0x17 0x6e $((NEW_VALUE >> 8))
-	sudo i2cset -r -y -m 0xff 1 0x17 0x6d $((NEW_VALUE & 0xFF))
-  fi
-}
-
-do_set_Vds_ext_hb_sp() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( ($(sudo i2cget -y 1 0x17 0x6f) << 4) + ($(sudo i2cget -y 1 0x17 0x6e) >> 4) ))
-  NEW_VALUE=$(whiptail --inputbox "Enter Hblank Stop (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
-  if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0xff 1 0x17 0x6f $((NEW_VALUE >> 4))
-	sudo i2cset -r -y -m 0xf0 1 0x17 0x6e $(( (NEW_VALUE & 0x00F) << 4))
-  fi
-}
-
-do_set_Vds_ext_vb_st() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x71) & 0x07) << 8) + $(sudo i2cget -y 1 0x17 0x70) ))
-  NEW_VALUE=$(whiptail --inputbox "Enter Vblank Start (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
-  if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x07 1 0x17 0x71 $((NEW_VALUE >> 8))
-	sudo i2cset -r -y -m 0xff 1 0x17 0x70 $((NEW_VALUE & 0xFF))
-  fi
-}
-
-do_set_Vds_ext_vb_sp() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x72) & 0x7f) << 4) + ($(sudo i2cget -y 1 0x17 0x71) >> 4) ))
-  NEW_VALUE=$(whiptail --inputbox "Enter Vblank Stop (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
-  if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x7f 1 0x17 0x72 $((NEW_VALUE >> 4))
-	sudo i2cset -r -y -m 0xf0 1 0x17 0x71 $(( (NEW_VALUE & 0x00F) << 4))
-  fi
-}
 
 do_output_geometry_menu() {
 while true; do
@@ -267,22 +230,18 @@ done
 #
 #
 do_set_Sp_pre_coast() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x05 b
-  CURRENT_VALUE=$(( $(sudo i2cget -y 1 0x17 0x38) ))
+  CURRENT_VALUE=$(( $(sed -n '1337p' settings/defaults/current.set) ))
   NEW_VALUE=$(whiptail --inputbox "Enter Coast Start (0 - 255)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x05 b
-	sudo i2cset -r -y -m 0xff 1 0x17 0x38 $NEW_VALUE
+    sed -i 1337c\\$NEW_VALUE settings/defaults/current.set
   fi
 }
 
 do_set_Sp_post_coast() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x05 b
-  CURRENT_VALUE=$(( $(sudo i2cget -y 1 0x17 0x39) ))
+  CURRENT_VALUE=$(( $(sed -n '1338p' settings/defaults/current.set) ))
   NEW_VALUE=$(whiptail --inputbox "Enter Coast Stop (0 - 255)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x05 b
-	sudo i2cset -r -y -m 0xff 1 0x17 0x39 $NEW_VALUE
+    sed -i 1338c\\$NEW_VALUE settings/defaults/current.set
   fi
 }
 
@@ -308,24 +267,28 @@ done
 #
 #
 do_set_Vds_vscale() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x18) & 0x7f) << 4) + ($(sudo i2cget -y 1 0x17 0x17) >> 4) ))
+  LOW=$(sed -n '792p' settings/defaults/current.set)
+  HIGH=$(sed -n '793p' settings/defaults/current.set)
+  CURRENT_VALUE=$(( (($HIGH & 0x7f) << 4) + ($LOW >> 4) ))
   NEW_VALUE=$(whiptail --inputbox "Enter V Scalling (0 - 1023)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x7f 1 0x17 0x18 $((NEW_VALUE >> 4))
-	sudo i2cset -r -y -m 0xf0 1 0x17 0x17 $(( (NEW_VALUE & 0x00F) << 4))
+    HIGH=$(( ((NEW_VALUE >> 4) & 0x7f) + ($HIGH & 0x80) ))
+	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+    sed -i 792c\\$LOW settings/defaults/current.set
+	sed -i 793c\\$HIGH settings/defaults/current.set
   fi
 }
 
 do_set_Vds_hscale() {
-  sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-  CURRENT_VALUE=$(( (($(sudo i2cget -y 1 0x17 0x17) & 0x03) << 8) + $(sudo i2cget -y 1 0x17 0x16) ))
+  LOW=$(sed -n 791p settings/defaults/current.set)
+  HIGH=$(sed -n 792p settings/defaults/current.set)
+  CURRENT_VALUE=$(( (( $HIGH & 0x03) << 8) + $LOW ))
   NEW_VALUE=$(whiptail --inputbox "Enter H Scalling (0 - 1023)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
-    sudo i2cset -r -y 1 0x17 0xf0 0x03 b
-	sudo i2cset -r -y -m 0x03 1 0x17 0x17 $((NEW_VALUE >> 8))
-	sudo i2cset -r -y -m 0xff 1 0x17 0x16 $((NEW_VALUE & 0xff))
+    HIGH=$(( ((NEW_VALUE >> 8) & 0x03) + ($HIGH & 0xfc) ))
+	LOW=$((NEW_VALUE & 0xff))
+    sed -i 791c\\$LOW settings/defaults/current.set
+	sed -i 792c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -388,7 +351,7 @@ do_finish() {
 
 # Everything needs to be run as root
 if [ $(id -u) -ne 0 ]; then
-  printf "Script must be run as root. Try 'sudo ./gbs-config'\n"
+  printf "Script must be run as root. Try 'sudo bash gbs-config.sh'\n"
   exit 1
 fi
 
