@@ -32,7 +32,11 @@ sudo patch -bN /etc/modules $DIR/scripts/patch.modules
 echo -e "\nApply patch to /etc/modprobe.d/raspi-blacklist.conf to allow i2c use:"
 sudo patch -bN /etc/modprobe.d/raspi-blacklist.conf $DIR/scripts/patch.raspi-blacklist.conf
 
-# Move triggerhappy files to /etc/triggerhappy/
+# Patch /etc/default/triggerhappy to use root user
+echo -e "\nApply patch to /etc/default/triggerhappy to use root"
+sudo patch -bN /etc/default/triggerhappy $DIR/scritps/patch.triggerhappy
+
+# Move triggerhappy files to /etc/triggerhappy/triggers.d
 echo -e "\nCopy triggerhappy hotkey conf files:"
 sudo cp thd/* /etc/triggerhappy/triggers.d/
 
