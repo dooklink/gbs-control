@@ -12,7 +12,7 @@ INSTALL GUIDE
 The install script is designed to be used with a fresh vanilla Raspbian install.
 to install or update run the following command:
 
-wget https://raw.githubusercontent.com/dooklink/gbs-control/latest/install-gbs-control.sh && bash install-gbs-control.sh
+wget https://raw.githubusercontent.com/dooklink/gbs-control/master/install-gbs-control.sh && bash install-gbs-control.sh
 
 ===============
 Usage

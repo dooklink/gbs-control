@@ -1,6 +1,6 @@
 #!/bin/bash
 # GBS82000 & GBS8220 Control over I2C bash script
-# 
+# Version 0.1
 # Code structure & Interactive shell script from raspi-config
 #
 

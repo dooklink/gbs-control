@@ -1,0 +1,6 @@
+gbs-control change log
+======================
+
+Version 0.1
+
+	Initial release version
