@@ -1,16 +1,11 @@
---- triggerhappy.old	2014-11-19 17:00:28.245204441 +1000
-+++ triggerhappy	2014-11-19 16:05:47.801570000 +1000
-@@ -7,11 +7,11 @@
+--- triggerhappy.orig	2014-11-19 09:46:08.000000000 +0000
++++ triggerhappy	2014-11-19 09:49:04.626385000 +0000
+@@ -7,7 +7,7 @@
  #
  
  # Additional options that are passed to the Daemon.
 -DAEMON_OPTS=""
-+#DAEMON_OPTS=""
++DAEMON_OPTS="--user root"
  
  # The Triggerhappy daemon (thd) drops its root privileges after
  # startup and becomes "nobody". If you want it to retain its root
- # status (e.g. to run commands only accessible to the system user),
- # uncomment the following line or specifiy the user option yourself:
- #
--#DAEMON_OPTS="--user root"
-+DAEMON_OPTS="--user root"

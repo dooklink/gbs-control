@@ -34,7 +34,7 @@ sudo patch -bN /etc/modprobe.d/raspi-blacklist.conf $DIR/scripts/patch.raspi-bla
 
 # Patch /etc/default/triggerhappy to use root user
 echo -e "\nApply patch to /etc/default/triggerhappy to use root"
-sudo patch -bN /etc/default/triggerhappy $DIR/scritps/patch.triggerhappy
+sudo patch -bN /etc/default/triggerhappy $DIR/scripts/patch.triggerhappy
 
 # Move triggerhappy files to /etc/triggerhappy/triggers.d
 echo -e "\nCopy triggerhappy hotkey conf files:"
