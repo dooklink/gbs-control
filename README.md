@@ -4,7 +4,7 @@ gbs-control
 Raspbian based Trueview5725 i2c controller
 
 Preliminary scripts for testing new custom settings on Trueview5725 based video processors.
-GBS8200, GBS8220, HD Box Pro and others
+GBS8200, GBS8220, and maybe others in the future (HD Box Pro)
 
 =============
 INSTALL GUIDE
