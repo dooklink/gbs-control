@@ -1,6 +1,17 @@
 gbs-control change log
 ======================
 
+Version 0.2
+	
+	New Settings Added
+		-YPbPr 1080p 60Hz modes
+		-YPbPr 480p & 576p standard 0.3V fixed sync
+		-RGBHV 800x600@60Hz modes for line doubled 288p/576i on a VESA timing
+		-RGBHV 1920x1080@60Hz modes
+	Settings can now be deleted from menu		
+	Installer updated to work with RPi model B rev 1 (untested)
+
+
 Version 0.1
 
 	Initial release version
