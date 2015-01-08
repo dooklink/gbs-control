@@ -1,5 +1,0 @@
-﻿Release version 0.2
-#
-# Write a tag message
-# Lines starting with '#' will be ignored.
-
