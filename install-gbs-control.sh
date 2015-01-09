@@ -37,17 +37,8 @@ echo -e "\nApply patch to /etc/default/triggerhappy to use root"
 sudo patch -bN /etc/default/triggerhappy $DIR/scripts/patch.triggerhappy
 
 # Move triggerhappy files to /etc/triggerhappy/triggers.d
-Revision=$(cat /proc/cpuinfo | grep Revision)
-Length=$((${#Revision}-1))
-Revision=${Revision:$Length} 
 echo -e "\nCopy triggerhappy hotkey conf files:"
-if [ "$Revision" = "0" ] || [ "$Revision" = "1" ]; then
-        echo -e "Rev 1 Board Detected"
-		sudo cp thd/triggerhappy_rev1/* /etc/triggerhappy/triggers.d/		
-else
-        echo -e "Rev 2 Board Detected"
-		sudo cp thd/triggerhappy/* /etc/triggerhappy/triggers.d/
-fi
+sudo cp thd/* /etc/triggerhappy/triggers.d/
 
 # Add required scripts for automatic start-up.
 echo -e "\nApply patch to .profile for bootup scripts:"

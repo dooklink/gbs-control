@@ -324,27 +324,6 @@ folder_settings () {
   cd settings
 }
 
-
-do_delete() {
-  # Set the prompt for the select command
-  PS3="Type a number or 'q' to quit: "
-  
-  # Create a list of files to display
-  folder_settings
-  fileList=$(find ./ -maxdepth 1 -type f | sort)
-  cd ..
-   
-  # Show a menu and ask for input. If the user entered a valid choice,
-  # then delete file
-  select fileName in $fileList; do
-  if [ -n "$fileName" ]; then
-    sudo rm -f settings/$fileName >> log.txt 2>&1
-  fi
-  break
-done
-}
-
-
 do_load() {
   # Set the prompt for the select command
   PS3="Type a number or 'q' to quit: "
@@ -386,9 +365,8 @@ while true; do
 	"1 Geometry" "Shift output image and blanking" \
 	"2 Coast" "Input sync & sampling settings" \
 	"3 H/V Scalling" "Change output canvas scalling" \
-	"4 Delete Settings" "Delete a stored settings file" \
-	"5 Save Settings" "Save current settings to file" \
-	"6 Load Settings" "Load previous settings from file"\
+	"4 Save Settings" "Save current settings to file" \
+	"5 Load Settings" "Load previous settings from file"\
     3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
@@ -398,9 +376,8 @@ while true; do
 	  1\ *) do_output_geometry_menu ;;
 	  2\ *) do_input_capture_menu ;;
 	  3\ *) do_hv_scalling_menu ;;
-	  4\ *) do_delete ;;
-	  5\ *) do_save ;;
-	  6\ *) do_load ;;
+	  4\ *) do_save ;;
+	  5\ *) do_load ;;
       *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   else

@@ -4,7 +4,7 @@ gbs-control
 Raspbian based Trueview5725 i2c controller
 
 Preliminary scripts for testing new custom settings on Trueview5725 based video processors.
-GBS8200, GBS8220, and maybe others in the future (HD Box Pro)
+GBS8200, GBS8220, HD Box Pro and others
 
 =============
 INSTALL GUIDE
@@ -12,11 +12,7 @@ INSTALL GUIDE
 The install script is designed to be used with a fresh vanilla Raspbian install.
 to install or update run the following command:
 
-curl https://raw.githubusercontent.com/dooklink/gbs-control/master/install-gbs-control.sh | bash
-
-or for the development version (not guaranteed to be working)
-
-curl https://raw.githubusercontent.com/dooklink/gbs-control/develop/install-gbs-control.sh | bash
+wget https://raw.githubusercontent.com/dooklink/gbs-control/master/install-gbs-control.sh && bash install-gbs-control.sh
 
 ===============
 Usage
