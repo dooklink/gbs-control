@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text eol=lf
+
+# Tread zip as binary and don't delta compress
+*.zip binary -delta=false
