@@ -4,6 +4,7 @@ gbs-control change log
 Version 0.3
 	Spelling in Menu fixed "Rasberry" -> "Raspberry"
 	Version added to Menu
+	Load and Delete menus now use whiptail interface, allows for scroll bar
 
 Version 0.2
 	

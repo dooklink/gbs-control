@@ -341,6 +341,17 @@ done
 }
 
 
+line_format(){
+  local IFS=$'\n'
+  i=$((1))
+  while read line ; do
+    [[ $line == Header* ]] && continue
+	filesWhiptail=$filesWhiptail$i" "$line" "
+    i=$(($i + 1))
+  done <"$1"  # Selection input argument as file for read
+}
+
+
 do_save() {
 
   NEW_VALUE=$(whiptail --inputbox "Enter Setting Name" 20 60 "default" 3>&1 1>&2 2>&3)
@@ -349,48 +360,49 @@ do_save() {
   fi
 }
 
+
 folder_settings () {
   cd settings
 }
 
 
 do_delete() {
-  # Set the prompt for the select command
-  PS3="Type a number or 'q' to quit: "
-  
   # Create a list of files to display
   folder_settings
-  fileList=$(find ./ -maxdepth 1 -type f | sort)
+  (find ./ -maxdepth 1 -type f -printf "%f\n" | sort) > defaults/fileList.txt
   cd ..
-   
-  # Show a menu and ask for input. If the user entered a valid choice,
-  # then delete file
-  select fileName in $fileList; do
-  if [ -n "$fileName" ]; then
+
+  line_format settings/defaults/fileList.txt
+  FUN=$(whiptail --title "Select Settings File to Delete" --menu "Settings Files" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Cancel --ok-button Select \
+  $filesWhiptail \
+  3>&1 1>&2 2>&3)
+  RET=$?
+  if [ $RET -eq 1 ]; then
+    return 0
+  elif [ $RET -eq 0 ]; then
+    fileName=$(sed -n $FUN'p' settings/defaults/fileList.txt)
     sudo rm -f settings/$fileName >> log.txt 2>&1
   fi
-  break
-done
 }
 
 
 do_load() {
-  # Set the prompt for the select command
-  PS3="Type a number or 'q' to quit: "
-   
   # Create a list of files to display
   folder_settings
-  fileList=$(find ./ -maxdepth 1 -type f | sort)
+  (find ./ -maxdepth 1 -type f -printf "%f\n" | sort) > defaults/fileList.txt
   cd ..
-   
-  # Show a menu and ask for input. If the user entered a valid choice,
-  # then copy file to current settings cache
-  select fileName in $fileList; do
-  if [ -n "$fileName" ]; then
-    sudo cp -f settings/$fileName settings/defaults/current.set >> log.txt 2>&1
+
+  line_format settings/defaults/fileList.txt
+  FUN=$(whiptail --title "Select Settings File to Load" --menu "Settings Files" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Cancel --ok-button Select \
+  $filesWhiptail \
+  3>&1 1>&2 2>&3)
+  RET=$?
+  if [ $RET -eq 1 ]; then
+    return 0
+  elif [ $RET -eq 0 ]; then
+    fileName=$(sed -n $FUN'p' settings/defaults/fileList.txt)
+	sudo cp -f settings/$fileName settings/defaults/current.set >> log.txt 2>&1
   fi
-  break
-done
 }
 
 
