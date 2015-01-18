@@ -378,10 +378,12 @@ do_delete() {
   3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
-    return 0
+    unset filesWhiptail
+	return 0
   elif [ $RET -eq 0 ]; then
     fileName=$(sed -n $FUN'p' settings/defaults/fileList.txt)
     sudo rm -f settings/$fileName >> log.txt 2>&1
+	unset filesWhiptail
   fi
 }
 
@@ -398,10 +400,12 @@ do_load() {
   3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
+    unset filesWhiptail
     return 0
   elif [ $RET -eq 0 ]; then
     fileName=$(sed -n $FUN'p' settings/defaults/fileList.txt)
 	sudo cp -f settings/$fileName settings/defaults/current.set >> log.txt 2>&1
+	unset filesWhiptail
   fi
 }
 
