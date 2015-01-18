@@ -11,14 +11,16 @@ calc_wt_size() {
   # NOTE: it's tempting to redirect stderr to /dev/null, so supress error 
   # output from tput. However in this case, tput detects neither stdout or 
   # stderr is a tty and so only gives default 80, 24 values
-  WT_HEIGHT=17
+  WT_HEIGHT=$(($(tput lines) - 8))
   WT_WIDTH=$(tput cols)
 
   if [ -z "$WT_WIDTH" ] || [ "$WT_WIDTH" -lt 60 ]; then
     WT_WIDTH=80
   fi
-  if [ "$WT_WIDTH" -gt 178 ]; then
-    WT_WIDTH=120
+  if [ "$WT_WIDTH" -gt 180 ]; then
+    WT_WIDTH=160
+  else
+    WT_WIDTH=$(($(tput cols) - 20))
   fi
   WT_MENU_HEIGHT=$(($WT_HEIGHT-8))
 }
@@ -28,6 +30,33 @@ folder_scripts () {
   cd scripts
 }
 
+do_help() {
+  whiptail --scrolltext --msgbox \
+  "System has two modes, 1.Menu and 2.Video Processing
+Use the following hot-keys to navigate.
+
+Navigation:
+F1 - Switch to Pi Menu
+F2 - Switch to Currently loaded settings
+F5 - Quick save settings (While in Video Mode)
+F7 - Quick load settings (While in Video Mode)
+
+Grave/Tilde(`/~)+1 - Switch menu to RGBHV 480p (VGA)
+Grave/Tilde(`/~)+2 - Switch menu to YPbPr 480p
+Grave/Tilde(`/~)+3 - Switch menu to RGBHV 576p (Non-standard)
+Grave/Tilde(`/~)+4 - Switch menu to YPbPr 576p
+
+Fine adjustments - Use while in Video Mode:
+CTRL+1 - Increase vertical scale (if enabled)
+CTRL+2 - Decrease vertical scale (if enabled)
+CTRL+3 - Decrease horizontal scale
+CTRL+4 - Increase horizontal scale
+CTRL+5 - Move image up
+CTRL+6 - Move image down
+CTRL+7 - Move image left
+CTRL+8 - Move image right"\
+  $WT_HEIGHT $WT_WIDTH 3>&1 1>&2 2>&3
+}
 
 #
 #
@@ -383,24 +412,26 @@ fi
 calc_wt_size
 while true; do
   FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
-	"1 Geometry" "Shift output image and blanking" \
-	"2 Coast" "Input sync & sampling settings" \
-	"3 H/V Scalling" "Change output canvas scalling" \
-	"4 Delete Settings" "Delete a stored settings file" \
-	"5 Save Settings" "Save current settings to file" \
-	"6 Load Settings" "Load previous settings from file"\
+    "1 HELP" "Usage Guide" \
+	"2 Geometry" "Shift output image and blanking" \
+	"3 Coast" "Input sync & sampling settings" \
+	"4 H/V Scalling" "Change output canvas scalling" \
+	"5 Delete Settings" "Delete a stored settings file" \
+	"6 Save Settings" "Save current settings to file" \
+	"7 Load Settings" "Load previous settings from file"\
     3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
     do_finish
   elif [ $RET -eq 0 ]; then
     case "$FUN" in
-	  1\ *) do_output_geometry_menu ;;
-	  2\ *) do_input_capture_menu ;;
-	  3\ *) do_hv_scalling_menu ;;
-	  4\ *) do_delete ;;
-	  5\ *) do_save ;;
-	  6\ *) do_load ;;
+	  1\ *) do_help ;;
+	  2\ *) do_output_geometry_menu ;;
+	  3\ *) do_input_capture_menu ;;
+	  4\ *) do_hv_scalling_menu ;;
+	  5\ *) do_delete ;;
+	  6\ *) do_save ;;
+	  7\ *) do_load ;;
       *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   else
