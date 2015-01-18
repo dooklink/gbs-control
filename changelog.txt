@@ -1,6 +1,10 @@
 gbs-control change log
 ======================
 
+Version 0.3
+	Spelling in Menu fixed "Rasberry" -> "Raspberry"
+	Version added to Menu
+
 Version 0.2
 	
 	New Settings Added

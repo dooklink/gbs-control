@@ -190,7 +190,7 @@ do_set_Vds_dis_vb_sp() {
 
 do_output_geometry_menu() {
 while true; do
-  FUN=$(whiptail --title "Rasberry Pi GB8200 / GBS8220 Controller" --menu "Output Geometry" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+  FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Output Geometry" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
     "1.1 Set Vds_hb_st" "Set Horizontal Left Offset" \
 	"1.2 Set Vds_hb_sp" "Set Horizontal Width" \
 	"1.3 Set Vds_vb_st" "Set Vertical Top Offset" \
@@ -247,7 +247,7 @@ do_set_Sp_post_coast() {
 
 do_input_capture_menu() {
 while true; do
-  FUN=$(whiptail --title "Rasberry Pi GB8200 / GBS8220 Controller" --menu "Input Sync Capture" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+  FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Input Sync Capture" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
 	"2.1 Set Sp_pre_coast" "Set the coast start point before vertical sync line number" \
 	"2.2 Set Sp_post_coast" "Set when coast will disable (return to normal PLL function)" \
     3>&1 1>&2 2>&3)
@@ -294,7 +294,7 @@ do_set_Vds_hscale() {
 
 do_hv_scalling_menu() {
 while true; do
-  FUN=$(whiptail --title "Rasberry Pi GB8200 / GBS8220 Controller" --menu "H/V Scalling" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+  FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "H/V Scalling" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
 	"3.1 Set Vds_hscale" "Set horizontal scalling" \
 	"3.2 Set Vds_vscale" "Set vertical scalling" \
     3>&1 1>&2 2>&3)
@@ -382,7 +382,7 @@ fi
 #sudo python scripts/rawProg.py scripts/start.txt > log.txt 2>&1
 calc_wt_size
 while true; do
-  FUN=$(whiptail --title "Rasberry Pi GB8200 / GBS8220 Controller" --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
+  FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
 	"1 Geometry" "Shift output image and blanking" \
 	"2 Coast" "Input sync & sampling settings" \
 	"3 H/V Scalling" "Change output canvas scalling" \
