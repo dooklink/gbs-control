@@ -11,8 +11,12 @@ calc_wt_size() {
   # NOTE: it's tempting to redirect stderr to /dev/null, so supress error 
   # output from tput. However in this case, tput detects neither stdout or 
   # stderr is a tty and so only gives default 80, 24 values
-  WT_HEIGHT=$(($(tput lines) - 4))
+  WT_HEIGHT=$(tput lines)
   WT_WIDTH=$(tput cols)
+
+  if [ "$WT_WIDTH" -gt 30 ]; then
+    WT_HIGHT= $(($(tput lines) - 10))
+  fi
 
   if [ -z "$WT_WIDTH" ] || [ "$WT_WIDTH" -lt 60 ]; then
     WT_WIDTH=80
