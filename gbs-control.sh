@@ -360,7 +360,7 @@ line_format(){
 
 do_save() {
 
-  NEW_VALUE=$(whiptail --inputbox "Enter Setting Name" 20 60 "default" 3>&1 1>&2 2>&3)
+  NEW_VALUE=$(whiptail --inputbox "Enter Setting Name" 8 $WT_WIDTH "default" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     sudo cp -f settings/defaults/current.set "settings/"$NEW_VALUE".set" >> log.txt 2>&1
   fi
@@ -371,6 +371,16 @@ folder_settings () {
   cd settings
 }
 
+
+do_nag() {
+  whiptail --defaultno --yesno "Delete Settings: "$fileName 8 $WT_WIDTH 3>&1 1>&2 2>&3
+  RET=$?
+  if [ $RET -eq 1 ]; then
+    return 0
+  elif [ $RET -eq 0 ]; then
+	sudo rm -f settings/$fileName >> log.txt 2>&1
+  fi
+}
 
 do_delete() {
   # Create a list of files to display
@@ -387,11 +397,13 @@ do_delete() {
     unset filesWhiptail
 	return 0
   elif [ $RET -eq 0 ]; then
-    fileName=$(sed -n $FUN'p' settings/defaults/fileList.txt)
-    sudo rm -f settings/$fileName >> log.txt 2>&1
+	fileName=$(sed -n $FUN'p' settings/defaults/fileList.txt)
+    do_nag
 	unset filesWhiptail
   fi
 }
+
+
 
 
 do_load() {
