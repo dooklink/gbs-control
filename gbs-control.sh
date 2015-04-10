@@ -1,6 +1,6 @@
 #!/bin/bash
 # GBS82000 & GBS8220 Control over I2C bash script
-# Version 0.1
+# Version 0.3
 # Code structure & Interactive shell script from raspi-config
 #
 
@@ -15,7 +15,7 @@ calc_wt_size() {
   WT_WIDTH=$(tput cols)
 
   if [ "$WT_WIDTH" -gt 30 ]; then
-    WT_HIGHT= $(($(tput lines) - 10))
+    WT_HIGHT=$(($(tput lines) - 10))
   fi
 
   if [ -z "$WT_WIDTH" ] || [ "$WT_WIDTH" -lt 60 ]; then
@@ -25,7 +25,7 @@ calc_wt_size() {
     WT_WIDTH=160
   fi
   if [ "$WT_WIDTH" -ne 74 ]; then
-    WT_WIDTH= $(($(tput cols) - 10))
+    WT_WIDTH=$(($(tput cols) - 10))
   fi
 
   WT_MENU_HEIGHT=$(($WT_HEIGHT-8))
@@ -36,8 +36,9 @@ folder_scripts () {
   cd scripts
 }
 
+
 do_help() {
-  whiptail --scrolltext --msgbox \
+whiptail --title "Raspberry Pi GB8200 Controller v0.3" --scrolltext --msgbox \
   "System has two modes, 1.Menu and 2.Video Processing
 Use the following hot-keys to navigate.
 
@@ -63,6 +64,7 @@ CTRL+7 - Move image left
 CTRL+8 - Move image right"\
   $WT_HEIGHT $WT_WIDTH 3>&1 1>&2 2>&3
 }
+
 
 #
 #
@@ -224,42 +226,42 @@ do_set_Vds_dis_vb_sp() {
 
 
 do_output_geometry_menu() {
-while true; do
-  FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Output Geometry" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
-    "1.1 Set Vds_hb_st" "Set Horizontal Left Offset" \
-	"1.2 Set Vds_hb_sp" "Set Horizontal Width" \
-	"1.3 Set Vds_vb_st" "Set Vertical Top Offset" \
-	"1.4 Set Vds_vb_sp" "Set Vertical Length" \
-    "1.5 Set Vds_hs_st" "Set Horizontal sync start position" \
-	"1.6 Set Vds_hs_sp" "Set Horizontal sync stop position " \
-	"1.7 Set Vds_vs_st" "Set Vertical sync start position" \
-	"1.8 Set Vds_vs_sp" "Set Vertical sync stop position" \
-	"1.9 Set Vds_dis_hb_st" "Set Horizontal blanking start position" \
-	"1.10 Set Vds_dis_hb_sp" "Set Horizontal blanking stop position" \
-	"1.11 Set Vds_dis_vb_st" "Set Vertical blanking start position" \
-	"1.12 Set Vds_dis_vb_sp" "Set Vertical blanking stop position" \
+  while true; do
+    FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Output Geometry" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+    "2.1 Set Vds_hb_st" "Set Horizontal Left Offset" \
+    "2.2 Set Vds_hb_sp" "Set Horizontal Width" \
+  	"2.3 Set Vds_vb_st" "Set Vertical Top Offset" \
+  	"2.4 Set Vds_vb_sp" "Set Vertical Length" \
+    "2.5 Set Vds_hs_st" "Set Horizontal sync start position" \
+  	"2.6 Set Vds_hs_sp" "Set Horizontal sync stop position " \
+    "2.7 Set Vds_vs_st" "Set Vertical sync start position" \
+    "2.8 Set Vds_vs_sp" "Set Vertical sync stop position" \
+    "2.9 Set Vds_dis_hb_st" "Set Horizontal blanking start position" \
+    "2.10 Set Vds_dis_hb_sp" "Set Horizontal blanking stop position" \
+    "2.11 Set Vds_dis_vb_st" "Set Vertical blanking start position" \
+    "2.12 Set Vds_dis_vb_sp" "Set Vertical blanking stop position" \
     3>&1 1>&2 2>&3)
-  RET=$?
-  if [ $RET -eq 1 ]; then
-    return 0
-  elif [ $RET -eq 0 ]; then
-    case "$FUN" in
-      1.1\ *) do_set_Vds_hb_st ;;
-	  1.2\ *) do_set_Vds_hb_sp ;;
-	  1.3\ *) do_set_Vds_vb_st ;;
-	  1.4\ *) do_set_Vds_vb_sp ;;
-	  1.5\ *) do_set_Vds_hs_st ;;
-	  1.6\ *) do_set_Vds_hs_sp ;;
-	  1.7\ *) do_set_Vds_vs_st ;;
-	  1.8\ *) do_set_Vds_vs_sp ;;
-	  1.9\ *) do_set_Vds_dis_hb_st ;;
-	  1.10\ *) do_set_Vds_dis_hb_sp ;;
-	  1.11\ *) do_set_Vds_dis_vb_st ;;
-	  1.12\ *) do_set_Vds_dis_vb_sp ;;
-      *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
-    esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
-  fi
-done
+    RET=$?
+    if [ $RET -eq 1 ]; then
+      return 0
+    elif [ $RET -eq 0 ]; then
+      case "$FUN" in
+        2.1\ *) do_set_Vds_hb_st ;;
+  	    2.2\ *) do_set_Vds_hb_sp ;;
+  	    2.3\ *) do_set_Vds_vb_st ;;
+  	    2.4\ *) do_set_Vds_vb_sp ;;
+  	    2.5\ *) do_set_Vds_hs_st ;;
+  	    2.6\ *) do_set_Vds_hs_sp ;;
+  	    2.7\ *) do_set_Vds_vs_st ;;
+  	    2.8\ *) do_set_Vds_vs_sp ;;
+  	    2.9\ *) do_set_Vds_dis_hb_st ;;
+  	    2.10\ *) do_set_Vds_dis_hb_sp ;;
+  	    2.11\ *) do_set_Vds_dis_vb_st ;;
+  	    2.12\ *) do_set_Vds_dis_vb_sp ;;
+        *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
+      esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+    fi
+  done
 }
 
 #
@@ -283,17 +285,17 @@ do_set_Sp_post_coast() {
 do_input_capture_menu() {
 while true; do
   FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Input Sync Capture" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
-	"2.1 Set Sp_pre_coast" "Set the coast start point before vertical sync line number" \
-	"2.2 Set Sp_post_coast" "Set when coast will disable (return to normal PLL function)" \
+	"4.1 Set Sp_pre_coast" "Set Vsync coast pre-length" \
+	"4.2 Set Sp_post_coast" "Set Vsync coast post-length" \
     3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
     return 0
   elif [ $RET -eq 0 ]; then
     case "$FUN" in
-      2.1\ *) do_set_Sp_pre_coast ;;
-	  2.2\ *) do_set_Sp_post_coast ;;
-      *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
+      4.1\ *) do_set_Sp_pre_coast ;;
+	  4.2\ *) do_set_Sp_post_coast ;;
+      *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   fi
 done
@@ -328,24 +330,36 @@ do_set_Vds_hscale() {
 }
 
 do_hv_scalling_menu() {
-while true; do
-  FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "H/V Scalling" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
-	"3.1 Set Vds_hscale" "Set horizontal scalling" \
-	"3.2 Set Vds_vscale" "Set vertical scalling" \
+  while true; do
+    FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "H/V Scalling" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+  	"4.1 Set Vds_hscale" "Set horizontal scalling" \
+  	"4.2 Set Vds_vscale" "Set vertical scalling" \
     3>&1 1>&2 2>&3)
-  RET=$?
-  if [ $RET -eq 1 ]; then
-    return 0
-  elif [ $RET -eq 0 ]; then
-    case "$FUN" in
-      3.1\ *) do_set_Vds_hscale ;;
-	  3.2\ *) do_set_Vds_vscale ;;
-      *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
-    esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
-  fi
-done
+    RET=$?
+    if [ $RET -eq 1 ]; then
+      return 0
+    elif [ $RET -eq 0 ]; then
+      case "$FUN" in
+        4.1\ *) do_set_Vds_hscale ;;
+  	    4.2\ *) do_set_Vds_vscale ;;
+        *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
+      esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+    fi
+  done
 }
 
+do_sync_level() {
+  LOW=$(sed -n 830p settings/defaults/current.set)
+  HIGH=$(sed -n 831p settings/defaults/current.set)
+  CURRENT_VALUE=$(( (( $HIGH & 0x01) << 8) + $LOW ))
+  NEW_VALUE=$(whiptail --inputbox "Enter Sync Level (0 - 511)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    HIGH=$(( ((NEW_VALUE >> 8) & 0x01) + ($HIGH & 0xfe) ))
+	LOW=$((NEW_VALUE & 0xff))
+    sed -i 830c\\$LOW settings/defaults/current.set
+	sed -i 831c\\$HIGH settings/defaults/current.set
+  fi
+}
 
 line_format(){
   local IFS=$'\n'
@@ -363,6 +377,9 @@ do_save() {
   NEW_VALUE=$(whiptail --inputbox "Enter Setting Name" 8 $WT_WIDTH "default" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     sudo cp -f settings/defaults/current.set "settings/"$NEW_VALUE".set" >> log.txt 2>&1
+	LEN=$(( ${#fileName} - 4))
+	fileName=${fileName:0:LEN}".dei"
+    sudo cp -f settings/defaults/current.dei "settings/deinterlace/"$NEW_VALUE".dei" >> log.txt 2>&1
   fi
 }
 
@@ -379,6 +396,9 @@ do_nag() {
     return 0
   elif [ $RET -eq 0 ]; then
 	sudo rm -f settings/$fileName >> log.txt 2>&1
+	LEN=$(( ${#fileName} - 4))
+	fileName=${fileName:0:LEN}".dei"
+	sudo rm -f settings/deinterlace/$fileName >> log.txt 2>&1
   fi
 }
 
@@ -404,8 +424,6 @@ do_delete() {
 }
 
 
-
-
 do_load() {
   # Create a list of files to display
   folder_settings
@@ -423,10 +441,12 @@ do_load() {
   elif [ $RET -eq 0 ]; then
     fileName=$(sed -n $FUN'p' settings/defaults/fileList.txt)
 	sudo cp -f settings/$fileName settings/defaults/current.set >> log.txt 2>&1
+	LEN=$(( ${#fileName} - 4))
+	fileName=${fileName:0:LEN}".dei"
+	sudo cp -f settings/deinterlace/$fileName settings/defaults/current.dei >> log.txt 2>&1
 	unset filesWhiptail
   fi
 }
-
 
 
 do_finish() {
@@ -439,6 +459,7 @@ if [ $(id -u) -ne 0 ]; then
   exit 1
 fi
 
+#bash adaptive_deinterlace.sh&
 #
 # Interactive use loop
 #
@@ -450,9 +471,10 @@ while true; do
 	"2 Geometry" "Shift output image and blanking" \
 	"3 Coast" "Input sync & sampling settings" \
 	"4 H/V Scalling" "Change output canvas scalling" \
-	"5 Delete Settings" "Delete a stored settings file" \
-	"6 Save Settings" "Save current settings to file" \
-	"7 Load Settings" "Load previous settings from file"\
+	"5 Sync Level" "Change output SOG/SOL sync level" \
+	"6 Delete Settings" "Delete a stored settings file" \
+	"7 Save Settings" "Save current settings to file" \
+	"8 Load Settings" "Load previous settings from file" \
     3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
@@ -463,9 +485,10 @@ while true; do
 	  2\ *) do_output_geometry_menu ;;
 	  3\ *) do_input_capture_menu ;;
 	  4\ *) do_hv_scalling_menu ;;
-	  5\ *) do_delete ;;
-	  6\ *) do_save ;;
-	  7\ *) do_load ;;
+	  5\ *) do_sync_level ;;
+	  6\ *) do_delete ;;
+	  7\ *) do_save ;;
+	  8\ *) do_load ;;
       *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   else

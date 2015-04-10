@@ -2,9 +2,20 @@ gbs-control change log
 ======================
 
 Version 0.3
+	New Settings Added
+		-YPbPr 1080p 50Hz modes
+		-YPbPr 720p 50Hz modes
+		-YPbPr 720p 60Hz modes
+		-RGBHV 1080p 50 to 60Hz modes
+		-RGBHV 720p 60Hz modes
+		-RGBHV 720p 50 to 60Hz modes
+		-RGBHV 800x600 50 to 60 Hz scaled 567i mode
+		-RGBHV 320x240p 60 to 120Hz Double Scan mode (for 31kHz CRTs)
+	Sync Level Adjust added, used for component YPbPr output
 	Spelling in Menu fixed "Rasberry" -> "Raspberry"
-	Version added to Menu Title
+	Version added to Menu Title (v0.3)
 	Load and Delete menus now use whiptail interface, allows for scroll bar
+	Fixed Right Ctrl hot-key in Triggerhappy con-fig
 
 Version 0.2
 	
