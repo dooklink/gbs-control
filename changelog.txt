@@ -16,6 +16,7 @@ Version 0.3
 	Version added to Menu Title (v0.3)
 	Load and Delete menus now use whiptail interface, allows for scroll bar
 	Fixed Right Ctrl hot-key in Triggerhappy con-fig
+	Device Tree support added to install script
 
 Version 0.2
 	
