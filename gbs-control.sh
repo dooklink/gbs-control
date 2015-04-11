@@ -377,9 +377,6 @@ do_save() {
   NEW_VALUE=$(whiptail --inputbox "Enter Setting Name" 8 $WT_WIDTH "default" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     sudo cp -f settings/defaults/current.set "settings/"$NEW_VALUE".set" >> log.txt 2>&1
-	LEN=$(( ${#fileName} - 4))
-	fileName=${fileName:0:LEN}".dei"
-    sudo cp -f settings/defaults/current.dei "settings/deinterlace/"$NEW_VALUE".dei" >> log.txt 2>&1
   fi
 }
 
@@ -396,9 +393,6 @@ do_nag() {
     return 0
   elif [ $RET -eq 0 ]; then
 	sudo rm -f settings/$fileName >> log.txt 2>&1
-	LEN=$(( ${#fileName} - 4))
-	fileName=${fileName:0:LEN}".dei"
-	sudo rm -f settings/deinterlace/$fileName >> log.txt 2>&1
   fi
 }
 
@@ -441,9 +435,6 @@ do_load() {
   elif [ $RET -eq 0 ]; then
     fileName=$(sed -n $FUN'p' settings/defaults/fileList.txt)
 	sudo cp -f settings/$fileName settings/defaults/current.set >> log.txt 2>&1
-	LEN=$(( ${#fileName} - 4))
-	fileName=${fileName:0:LEN}".dei"
-	sudo cp -f settings/deinterlace/$fileName settings/defaults/current.dei >> log.txt 2>&1
 	unset filesWhiptail
   fi
 }
