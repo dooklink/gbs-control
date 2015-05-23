@@ -450,23 +450,21 @@ if [ $(id -u) -ne 0 ]; then
   exit 1
 fi
 
-#bash adaptive_deinterlace.sh&
 #
 # Interactive use loop
 #
-#sudo python scripts/rawProg.py scripts/start.txt > log.txt 2>&1
 calc_wt_size
 while true; do
   FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
-    "1 HELP" "Usage Guide" \
-	"2 Geometry" "Shift output image and blanking" \
-	"3 Coast" "Input sync & sampling settings" \
-	"4 H/V Scalling" "Change output canvas scalling" \
-	"5 Sync Level" "Change output SOG/SOL sync level" \
-	"6 Delete Settings" "Delete a stored settings file" \
-	"7 Save Settings" "Save current settings to file" \
-	"8 Load Settings" "Load previous settings from file" \
-    3>&1 1>&2 2>&3)
+  "1 HELP" "Usage Guide" \
+  "2 Geometry" "Shift output image and blanking" \
+  "3 Coast" "Input sync & sampling settings" \
+  "4 H/V Scalling" "Change output canvas scalling" \
+  "5 Sync Level" "Change output SOG/SOL sync level" \
+  "6 Delete Settings" "Delete a stored settings file" \
+  "7 Save Settings" "Save current settings to file" \
+  "8 Load Settings" "Load previous settings from file" \
+  3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
     do_finish
