@@ -2,6 +2,8 @@ gbs-control change log
 ======================
 
 Version 0.3
+  
+  Dynamic De-interlace - detect and change de-interlace mode automatically
 	New Settings Added
 		-YPbPr 1080p 50Hz modes
 		-YPbPr 720p 50Hz modes
