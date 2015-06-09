@@ -8,7 +8,7 @@ INTERACTIVE=True
 
 #
 calc_wt_size() {
-  # NOTE: it's tempting to redirect stderr to /dev/null, so supress error 
+  # NOTE: it's tempting to redirect stderr to /dev/null, so suppress error 
   # output from tput. However in this case, tput detects neither stdout or 
   # stderr is a tty and so only gives default 80, 24 values
   WT_HEIGHT=$(tput lines)
@@ -31,15 +31,27 @@ calc_wt_size() {
   WT_MENU_HEIGHT=$(($WT_HEIGHT-8))
 }
 
+detect_revision() {
+  REVISION=$(cat /proc/cpuinfo | grep revision)
+  LEN=${#REVISION}
+  POS=$((LEN -1))
+  REV=${REVISION:POS}
+  if [ "$REV" = "0" ] || [ "$REV" = "1" ]; then
+    I2C_PORT=$((0))
+  else
+    I2C_PORT=$((1))
+  fi
+}
 
 folder_scripts () {
   cd scripts
 }
 
-
+#
+#
 do_help() {
 whiptail --title "Raspberry Pi GB8200 Controller v0.3" --scrolltext --msgbox \
-  "System has two modes, 1.Menu and 2.Video Processing
+"System has two modes, 1.Menu and 2.Video Processing
 Use the following hot-keys to navigate.
 
 Navigation:
@@ -48,10 +60,10 @@ F2 - Switch to Currently loaded settings
 F5 - Quick save settings (While in Video Mode)
 F7 - Quick load settings (While in Video Mode)
 
-Grave/Tilde(`/~)+1 - Switch menu to RGBHV 480p (VGA)
-Grave/Tilde(`/~)+2 - Switch menu to YPbPr 480p
-Grave/Tilde(`/~)+3 - Switch menu to RGBHV 576p (Non-standard)
-Grave/Tilde(`/~)+4 - Switch menu to YPbPr 576p
+Grave/Tilde(\`/~)+1 - Switch menu to RGBHV 480p (VGA)
+Grave/Tilde(\`/~)+2 - Switch menu to YPbPr 480p
+Grave/Tilde(\`/~)+3 - Switch menu to RGBHV 576p (Non-standard)
+Grave/Tilde(\`/~)+4 - Switch menu to YPbPr 576p
 
 Fine adjustments - Use while in Video Mode:
 CTRL+1 - Increase vertical scale (if enabled)
@@ -61,10 +73,144 @@ CTRL+4 - Increase horizontal scale
 CTRL+5 - Move image up
 CTRL+6 - Move image down
 CTRL+7 - Move image left
-CTRL+8 - Move image right"\
+CTRL+8 - Move image right" \
   $WT_HEIGHT $WT_WIDTH 3>&1 1>&2 2>&3
 }
 
+#
+#
+do_deinterlace_enable() {
+  CURRENT_VALUE=$(sed -n 1p settings/defaults/current.dei)
+  if [ "$CURRENT_VALUE" == "false" ]; then
+    DEFAULT_NO="--defaultno"
+  else
+    DEFAULT_NO=""
+  fi
+  whiptail $DEFAULT_NO --yes-button "Enable" --no-button "Disable" --yesno "Dynamic De-interlace Enable/Disable" 10 50 3>&1 1>&2 2>&3
+  RET=$?
+  if [ $RET -eq 1 ]; then
+    # NO / Disable Branch
+    sed -i 1c\\false settings/defaults/current.dei
+  elif [ $RET -eq 0 ]; then
+    # YES / Enable Branch
+    sed -i 1c\\true settings/defaults/current.dei
+  fi
+}
+
+do_deinterlace_offset() {
+  CURRENT_VALUE=$(sed -n 2p settings/defaults/current.dei)
+  NEW_VALUE=$(whiptail --inputbox "Enter Vertical Offset (+ve or -ve)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    sed -i 2c\\$NEW_VALUE settings/defaults/current.dei
+  fi
+}
+
+do_deinterlace_detection() {
+  sudo python /home/pi/scripts/regProg.py /home/pi/settings/defaults/current.set
+  sudo i2cset -y $I2C_PORT 0x17 0xf0 0x00
+  VLINES=$(( (($(sudo i2cget -y $I2C_PORT 0x17 0x08) & 0x0F ) << 7) + ($(sudo i2cget -y $I2C_PORT 0x17 0x07) >> 1) ))
+  sudo python /home/pi/scripts/regProg.py /home/pi/settings/defaults/pi.set
+  CURRENT_VALUE=$(sed -n 3p settings/defaults/current.dei)
+  if [ "$CURRENT_VALUE" == "interlaced" ]; then
+    DEFAULT_NO="--defaultno"
+  else
+    DEFAULT_NO=""
+  fi
+  whiptail $DEFAULT_NO --yes-button "Progressive" --no-button "Interlaced" \
+  --yesno "Mode Detection:
+
+Total Vertical Video Lines Detected = "$VLINES"
+Is the current source Interlaced or Progressive?" \
+  20 60 3>&1 1>&2 2>&3
+  RET=$?
+  if [ $RET -eq 1 ]; then
+    # NO / Interlaced Branch
+    sed -i 3c\\interlaced settings/defaults/current.dei
+    sed -i 4c\\$VLINES settings/defaults/current.dei
+  elif [ $RET -eq 0 ]; then
+    # YES / Progressive Branch
+    sed -i 3c\\progressive settings/defaults/current.dei
+    sed -i 4c\\$VLINES settings/defaults/current.dei
+  fi
+}
+
+do_deinterlace_default() {
+  CURRENT_VALUE=$(sed -n 5p settings/defaults/current.dei)
+  if [ "$CURRENT_VALUE" == "interlaced" ]; then
+    DEFAULT_NO="--defaultno"
+  else
+    DEFAULT_NO=""
+  fi
+  whiptail $DEFAULT_NO --yes-button "Progressive" --no-button "Interlaced" \
+  --yesno "Default Mode:
+
+Select the normal operating mode
+Is the geometry set-up for Interlaced or Progressive?" \
+  20 60 3>&1 1>&2 2>&3
+  RET=$?
+  if [ $RET -eq 1 ]; then
+    # NO / Interlaced Branch
+    sed -i 5c\\interlaced settings/defaults/current.dei
+  elif [ $RET -eq 0 ]; then
+    # YES / Progressive Branch
+    sed -i 5c\\progressive settings/defaults/current.dei
+  fi
+}
+
+do_deinterlace_help() {
+  whiptail --title "Raspberry Pi GB8200 Controller v0.3" --scrolltext --msgbox \
+  "The de-interlace switcher attempts to detect the mode from the TIVA chip. \
+Use the detect menu to get the current number of lines reported. \
+You will need to enter if this represents interlaced or progressive video.
+
+Vertical offset can be entered to adjust for the Vsync difference between modes.
+The default mode can be changed to reflect if the settings file is normally \
+set-up for interlace or progressive scan signals. This sets the basis for the \
+vertical offset.
+
+This information is saved in a separate file for each of the video \
+settings and will be remembered. (It is not a global setting.)
+If a video settings file has no corresponding de-interlace settings file then \
+the last active settings will be used." \
+  $WT_HEIGHT $WT_WIDTH 3>&1 1>&2 2>&3
+}
+
+do_deinterlace_menu() {
+  while true; do
+    DEI_ENABLED=$(sed -n 1p settings/defaults/current.dei)
+    if [ "$DEI_ENABLED" == "false" ]; then
+      DEI_ENABLED="Disabled"
+    else
+      DEI_ENABLED="Enabled"
+    fi
+  DEI_OFFSET=$(sed -n 2p settings/defaults/current.dei)
+	DEI_DETECT=$(sed -n 4p settings/defaults/current.dei)" = "$(sed -n 3p settings/defaults/current.dei)
+  DEI_DEFAULT=$(sed -n 5p settings/defaults/current.dei)
+    FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" \
+	--menu "Dynamic De-interlace Settings" \
+	$WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT \
+	--cancel-button Back --ok-button Select -- \
+    "2.1 Enable/Disable: " "$DEI_ENABLED" \
+  	"2.2 Vertical Offset: " "$DEI_OFFSET" \
+    "2.3 Set Detection: " "$DEI_DETECT"\
+    "2.4 Set Default: " "$DEI_DEFAULT"\
+  	"2.5 HELP" "Display Help Guide" \
+    3>&1 1>&2 2>&3)
+    RET=$?
+    if [ $RET -eq 1 ]; then
+      return 0
+    elif [ $RET -eq 0 ]; then
+      case "$FUN" in
+        2.1\ *) do_deinterlace_enable ;;
+  	    2.2\ *) do_deinterlace_offset ;;
+        2.3\ *) do_deinterlace_detection ;;
+        2.4\ *) do_deinterlace_default ;;
+  	    2.5\ *) do_deinterlace_help ;; 
+        *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
+      esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+    fi
+  done
+}
 
 #
 #
@@ -224,40 +370,39 @@ do_set_Vds_dis_vb_sp() {
   fi
 }
 
-
 do_output_geometry_menu() {
   while true; do
     FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Output Geometry" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
-    "2.1 Set Vds_hb_st" "Set Horizontal Left Offset" \
-    "2.2 Set Vds_hb_sp" "Set Horizontal Width" \
-  	"2.3 Set Vds_vb_st" "Set Vertical Top Offset" \
-  	"2.4 Set Vds_vb_sp" "Set Vertical Length" \
-    "2.5 Set Vds_hs_st" "Set Horizontal sync start position" \
-  	"2.6 Set Vds_hs_sp" "Set Horizontal sync stop position " \
-    "2.7 Set Vds_vs_st" "Set Vertical sync start position" \
-    "2.8 Set Vds_vs_sp" "Set Vertical sync stop position" \
-    "2.9 Set Vds_dis_hb_st" "Set Horizontal blanking start position" \
-    "2.10 Set Vds_dis_hb_sp" "Set Horizontal blanking stop position" \
-    "2.11 Set Vds_dis_vb_st" "Set Vertical blanking start position" \
-    "2.12 Set Vds_dis_vb_sp" "Set Vertical blanking stop position" \
+    "3.1 Set Vds_hb_st" "Set Horizontal Left Offset" \
+    "3.2 Set Vds_hb_sp" "Set Horizontal Width" \
+  	"3.3 Set Vds_vb_st" "Set Vertical Top Offset" \
+  	"3.4 Set Vds_vb_sp" "Set Vertical Length" \
+    "3.5 Set Vds_hs_st" "Set Horizontal sync start position" \
+  	"3.6 Set Vds_hs_sp" "Set Horizontal sync stop position " \
+    "3.7 Set Vds_vs_st" "Set Vertical sync start position" \
+    "3.8 Set Vds_vs_sp" "Set Vertical sync stop position" \
+    "3.9 Set Vds_dis_hb_st" "Set Horizontal blanking start position" \
+    "3.10 Set Vds_dis_hb_sp" "Set Horizontal blanking stop position" \
+    "3.11 Set Vds_dis_vb_st" "Set Vertical blanking start position" \
+    "3.12 Set Vds_dis_vb_sp" "Set Vertical blanking stop position" \
     3>&1 1>&2 2>&3)
     RET=$?
     if [ $RET -eq 1 ]; then
       return 0
     elif [ $RET -eq 0 ]; then
       case "$FUN" in
-        2.1\ *) do_set_Vds_hb_st ;;
-  	    2.2\ *) do_set_Vds_hb_sp ;;
-  	    2.3\ *) do_set_Vds_vb_st ;;
-  	    2.4\ *) do_set_Vds_vb_sp ;;
-  	    2.5\ *) do_set_Vds_hs_st ;;
-  	    2.6\ *) do_set_Vds_hs_sp ;;
-  	    2.7\ *) do_set_Vds_vs_st ;;
-  	    2.8\ *) do_set_Vds_vs_sp ;;
-  	    2.9\ *) do_set_Vds_dis_hb_st ;;
-  	    2.10\ *) do_set_Vds_dis_hb_sp ;;
-  	    2.11\ *) do_set_Vds_dis_vb_st ;;
-  	    2.12\ *) do_set_Vds_dis_vb_sp ;;
+        3.1\ *) do_set_Vds_hb_st ;;
+  	    3.2\ *) do_set_Vds_hb_sp ;;
+  	    3.3\ *) do_set_Vds_vb_st ;;
+  	    3.4\ *) do_set_Vds_vb_sp ;;
+  	    3.5\ *) do_set_Vds_hs_st ;;
+  	    3.6\ *) do_set_Vds_hs_sp ;;
+  	    3.7\ *) do_set_Vds_vs_st ;;
+  	    3.8\ *) do_set_Vds_vs_sp ;;
+  	    3.9\ *) do_set_Vds_dis_hb_st ;;
+  	    3.10\ *) do_set_Vds_dis_hb_sp ;;
+  	    3.11\ *) do_set_Vds_dis_vb_st ;;
+  	    3.12\ *) do_set_Vds_dis_vb_sp ;;
         *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
       esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
     fi
@@ -294,7 +439,7 @@ while true; do
   elif [ $RET -eq 0 ]; then
     case "$FUN" in
       4.1\ *) do_set_Sp_pre_coast ;;
-	  4.2\ *) do_set_Sp_post_coast ;;
+	    4.2\ *) do_set_Sp_post_coast ;;
       *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   fi
@@ -307,7 +452,7 @@ do_set_Vds_vscale() {
   LOW=$(sed -n '792p' settings/defaults/current.set)
   HIGH=$(sed -n '793p' settings/defaults/current.set)
   CURRENT_VALUE=$(( (($HIGH & 0x7f) << 4) + ($LOW >> 4) ))
-  NEW_VALUE=$(whiptail --inputbox "Enter V Scalling (0 - 1023)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  NEW_VALUE=$(whiptail --inputbox "Enter V Scaling (0 - 1023)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 4) & 0x7f) + ($HIGH & 0x80) ))
 	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
@@ -320,7 +465,7 @@ do_set_Vds_hscale() {
   LOW=$(sed -n 791p settings/defaults/current.set)
   HIGH=$(sed -n 792p settings/defaults/current.set)
   CURRENT_VALUE=$(( (( $HIGH & 0x03) << 8) + $LOW ))
-  NEW_VALUE=$(whiptail --inputbox "Enter H Scalling (0 - 1023)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  NEW_VALUE=$(whiptail --inputbox "Enter H Scaling (0 - 1023)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 8) & 0x03) + ($HIGH & 0xfc) ))
 	LOW=$((NEW_VALUE & 0xff))
@@ -331,23 +476,25 @@ do_set_Vds_hscale() {
 
 do_hv_scalling_menu() {
   while true; do
-    FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "H/V Scalling" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
-  	"4.1 Set Vds_hscale" "Set horizontal scalling" \
-  	"4.2 Set Vds_vscale" "Set vertical scalling" \
+    FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "H/V Scaling" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+  	"5.1 Set Vds_hscale" "Set horizontal scaling" \
+  	"5.2 Set Vds_vscale" "Set vertical scaling" \
     3>&1 1>&2 2>&3)
     RET=$?
     if [ $RET -eq 1 ]; then
       return 0
     elif [ $RET -eq 0 ]; then
       case "$FUN" in
-        4.1\ *) do_set_Vds_hscale ;;
-  	    4.2\ *) do_set_Vds_vscale ;;
+        5.1\ *) do_set_Vds_hscale ;;
+  	    5.2\ *) do_set_Vds_vscale ;;
         *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
       esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
     fi
   done
 }
 
+#
+#
 do_sync_level() {
   LOW=$(sed -n 830p settings/defaults/current.set)
   HIGH=$(sed -n 831p settings/defaults/current.set)
@@ -361,6 +508,8 @@ do_sync_level() {
   fi
 }
 
+#
+#
 line_format(){
   local IFS=$'\n'
   i=$((1))
@@ -371,20 +520,20 @@ line_format(){
   done <"$1"  # Selection input argument as file for read
 }
 
-
+#
+#
 do_save() {
 
   NEW_VALUE=$(whiptail --inputbox "Enter Setting Name" 8 $WT_WIDTH "default" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     sudo cp -f settings/defaults/current.set "settings/"$NEW_VALUE".set" >> log.txt 2>&1
+    sudo cp -f settings/defaults/current.dei "settings/deinterlace/"$NEW_VALUE".dei" >> log.txt 2>&1
   fi
 }
-
 
 folder_settings () {
   cd settings
 }
-
 
 do_nag() {
   whiptail --defaultno --yesno "Delete Settings: "$fileName 8 $WT_WIDTH 3>&1 1>&2 2>&3
@@ -393,9 +542,14 @@ do_nag() {
     return 0
   elif [ $RET -eq 0 ]; then
 	sudo rm -f settings/$fileName >> log.txt 2>&1
+	LEN=$(( ${#fileName} - 4))
+	fileName=${fileName:0:LEN}".dei"
+	sudo rm -f settings/deinterlace/$fileName >> log.txt 2>&1
   fi
 }
 
+#
+#
 do_delete() {
   # Create a list of files to display
   folder_settings
@@ -417,7 +571,8 @@ do_delete() {
   fi
 }
 
-
+#
+#
 do_load() {
   # Create a list of files to display
   folder_settings
@@ -435,18 +590,24 @@ do_load() {
   elif [ $RET -eq 0 ]; then
     fileName=$(sed -n $FUN'p' settings/defaults/fileList.txt)
 	sudo cp -f settings/$fileName settings/defaults/current.set >> log.txt 2>&1
-	unset filesWhiptail
+	LEN=$(( ${#fileName} - 4))
+	fileName=${fileName:0:LEN}".dei"
+	sudo cp -f settings/deinterlace/$fileName settings/defaults/current.dei >> log.txt 2>&1
+  unset filesWhiptail
   fi
 }
 
-
+#
+#
 do_finish() {
+  sed -i 1c\\true /home/pi/settings/defaults/end
   exit 0
 }
 
 # Everything needs to be run as root
 if [ $(id -u) -ne 0 ]; then
   printf "Script must be run as root. Try 'sudo bash gbs-config.sh'\n"
+  sed -i 1c\\true /home/pi/settings/defaults/end
   exit 1
 fi
 
@@ -454,16 +615,24 @@ fi
 # Interactive use loop
 #
 calc_wt_size
+detect_revision
+# Start / Reset "adaptive_deinterlace.sh"
+sed -i 1c\\true /home/pi/settings/defaults/end
+sleep 0.25
+sed -i 1c\\false /home/pi/settings/defaults/end
+sleep 0.25
+bash adaptive_deinterlace.sh > /dev/null 2>&1 &
 while true; do
-  FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
+  FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Set-up Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
   "1 HELP" "Usage Guide" \
-  "2 Geometry" "Shift output image and blanking" \
-  "3 Coast" "Input sync & sampling settings" \
-  "4 H/V Scalling" "Change output canvas scalling" \
-  "5 Sync Level" "Change output SOG/SOL sync level" \
-  "6 Delete Settings" "Delete a stored settings file" \
-  "7 Save Settings" "Save current settings to file" \
-  "8 Load Settings" "Load previous settings from file" \
+	"2 De-interlace" "Dynamic De-interlace Settings" \
+  "3 Geometry" "Shift output image and blanking" \
+  "4 Coast" "Input sync & sampling settings" \
+  "5 H/V Scaling" "Change output canvas scaling" \
+  "6 Sync Level" "Change output SOG/SOL sync level" \
+  "7 Delete Settings" "Delete a stored settings file" \
+  "8 Save Settings" "Save current settings to file" \
+  "9 Load Settings" "Load previous settings from file" \
   3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
@@ -471,16 +640,18 @@ while true; do
   elif [ $RET -eq 0 ]; then
     case "$FUN" in
 	  1\ *) do_help ;;
-	  2\ *) do_output_geometry_menu ;;
-	  3\ *) do_input_capture_menu ;;
-	  4\ *) do_hv_scalling_menu ;;
-	  5\ *) do_sync_level ;;
-	  6\ *) do_delete ;;
-	  7\ *) do_save ;;
-	  8\ *) do_load ;;
+    2\ *) do_deinterlace_menu ;;
+	  3\ *) do_output_geometry_menu ;;
+	  4\ *) do_input_capture_menu ;;
+	  5\ *) do_hv_scalling_menu ;;
+	  6\ *) do_sync_level ;;
+	  7\ *) do_delete ;;
+	  8\ *) do_save ;;
+	  9\ *) do_load ;;
       *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   else
     exit 1
+    sed -i 1c\\true /home/pi/settings/defaults/end
   fi
 done
