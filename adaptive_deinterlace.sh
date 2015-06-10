@@ -42,8 +42,8 @@ while [ "$END" == "false" ]; do
     LOW=$(( $(sed -n '776p' /home/pi/settings/defaults/current.set) ))
     MED=$(( $(sed -n '777p' /home/pi/settings/defaults/current.set) ))
     HIGH=$(( $(sed -n '778p' /home/pi/settings/defaults/current.set) ))
-    VDS_VTOP=$(( ( (($MED & 0x07) << 8) + $LOW -1) ))
-    VDS_VBOTTOM=$(( ( (($HIGH & 0x7f) << 4) + ($MED >> 4) -1) ))
+    VDS_VTOP=$(( ( ($MED & 0x07) << 8) + $LOW ))
+    VDS_VBOTTOM=$(( ( ($HIGH & 0x7f) << 4) + ($MED >> 4) ))
     
     IF_VPOS=$(( $(sed -n 287p /home/pi/settings/defaults/current.set) ))
     IF_VOFFSET=$(($OFFSET))
