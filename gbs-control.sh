@@ -221,9 +221,9 @@ do_set_Vds_hb_st() {
   NEW_VALUE=$(whiptail --inputbox "Enter Hblank Start (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 8) & 0x0f) + ($HIGH & 0xf0) ))
-	LOW=$((NEW_VALUE & 0xff))
+	  LOW=$((NEW_VALUE & 0xff))
     sed -i 773c\\$LOW settings/defaults/current.set
-	sed -i 774c\\$HIGH settings/defaults/current.set
+	  sed -i 774c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -234,9 +234,9 @@ do_set_Vds_hb_sp() {
   NEW_VALUE=$(whiptail --inputbox "Enter Hblank Stop (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( NEW_VALUE >> 4 ))
-	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+	  LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
     sed -i 774c\\$LOW settings/defaults/current.set
-	sed -i 775c\\$HIGH settings/defaults/current.set
+	  sed -i 775c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -247,9 +247,9 @@ do_set_Vds_vb_st() {
   NEW_VALUE=$(whiptail --inputbox "Enter Vblank Start (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 8) & 0x07) + ($HIGH & 0xf8) ))
-	LOW=$((NEW_VALUE & 0xff))
+	  LOW=$((NEW_VALUE & 0xff))
     sed -i 776c\\$LOW settings/defaults/current.set
-	sed -i 777c\\$HIGH settings/defaults/current.set
+	  sed -i 777c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -260,9 +260,9 @@ do_set_Vds_vb_sp() {
   NEW_VALUE=$(whiptail --inputbox "Enter Vblank Stop (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 4) & 0x7f) + ($HIGH & 0x80) ))
-	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+	  LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
     sed -i 777c\\$LOW settings/defaults/current.set
-	sed -i 778c\\$HIGH settings/defaults/current.set
+	  sed -i 778c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -273,9 +273,9 @@ do_set_Vds_hs_st() {
   NEW_VALUE=$(whiptail --inputbox "Enter Hsync Start (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 8) & 0x0f) + ($HIGH & 0xf0) ))
-	LOW=$((NEW_VALUE & 0xff))
+	  LOW=$((NEW_VALUE & 0xff))
     sed -i 779c\\$LOW settings/defaults/current.set
-	sed -i 780c\\$HIGH settings/defaults/current.set
+	  sed -i 780c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -286,9 +286,9 @@ do_set_Vds_hs_sp() {
   NEW_VALUE=$(whiptail --inputbox "Enter Hsync Stop (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( NEW_VALUE >> 4 ))
-	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+	  LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
     sed -i 780c\\$LOW settings/defaults/current.set
-	sed -i 781c\\$HIGH settings/defaults/current.set
+	  sed -i 781c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -299,9 +299,9 @@ do_set_Vds_vs_st() {
   NEW_VALUE=$(whiptail --inputbox "Enter Vsync Start (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 8) & 0x07) + ($HIGH & 0xf8) ))
-	LOW=$((NEW_VALUE & 0xff))
+	  LOW=$((NEW_VALUE & 0xff))
     sed -i 782c\\$LOW settings/defaults/current.set
-	sed -i 783c\\$HIGH settings/defaults/current.set
+	  sed -i 783c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -312,9 +312,9 @@ do_set_Vds_vs_sp() {
   NEW_VALUE=$(whiptail --inputbox "Enter Vsync Stop (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 4) & 0x7f) + ($HIGH & 0x80) ))
-	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+	  LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
     sed -i 783c\\$LOW settings/defaults/current.set
-	sed -i 784c\\$HIGH settings/defaults/current.set
+	  sed -i 784c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -325,9 +325,9 @@ do_set_Vds_dis_hb_st() {
   NEW_VALUE=$(whiptail --inputbox "Enter Hblank Start (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 8) & 0x0f) + ($HIGH & 0xf0) ))
-	LOW=$((NEW_VALUE & 0xff))
+	  LOW=$((NEW_VALUE & 0xff))
     sed -i 785c\\$LOW settings/defaults/current.set
-	sed -i 786c\\$HIGH settings/defaults/current.set
+	  sed -i 786c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -338,9 +338,9 @@ do_set_Vds_dis_hb_sp() {
   NEW_VALUE=$(whiptail --inputbox "Enter Hblank Stop (0 - 4095)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( NEW_VALUE >> 4 ))
-	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+	  LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
     sed -i 786c\\$LOW settings/defaults/current.set
-	sed -i 787c\\$HIGH settings/defaults/current.set
+	  sed -i 787c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -351,9 +351,9 @@ do_set_Vds_dis_vb_st() {
   NEW_VALUE=$(whiptail --inputbox "Enter Vblank Start (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 8) & 0x07) + ($HIGH & 0xf8) ))
-	LOW=$((NEW_VALUE & 0xff))
+	  LOW=$((NEW_VALUE & 0xff))
     sed -i 788c\\$LOW settings/defaults/current.set
-	sed -i 789c\\$HIGH settings/defaults/current.set
+	  sed -i 789c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -364,9 +364,9 @@ do_set_Vds_dis_vb_sp() {
   NEW_VALUE=$(whiptail --inputbox "Enter Vblank Stop (0 - 2047)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 4) & 0x7f) + ($HIGH & 0x80) ))
-	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+	  LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
     sed -i 789c\\$LOW settings/defaults/current.set
-	sed -i 790c\\$HIGH settings/defaults/current.set
+	  sed -i 790c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -455,9 +455,9 @@ do_set_Vds_vscale() {
   NEW_VALUE=$(whiptail --inputbox "Enter V Scaling (0 - 1023)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 4) & 0x7f) + ($HIGH & 0x80) ))
-	LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
+	  LOW=$(( ((NEW_VALUE << 4) & 0xf0) + ($LOW & 0x0f) ))
     sed -i 792c\\$LOW settings/defaults/current.set
-	sed -i 793c\\$HIGH settings/defaults/current.set
+	  sed -i 793c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -468,9 +468,9 @@ do_set_Vds_hscale() {
   NEW_VALUE=$(whiptail --inputbox "Enter H Scaling (0 - 1023)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 8) & 0x03) + ($HIGH & 0xfc) ))
-	LOW=$((NEW_VALUE & 0xff))
+	  LOW=$((NEW_VALUE & 0xff))
     sed -i 791c\\$LOW settings/defaults/current.set
-	sed -i 792c\\$HIGH settings/defaults/current.set
+	  sed -i 792c\\$HIGH settings/defaults/current.set
   fi
 }
 
@@ -502,10 +502,341 @@ do_sync_level() {
   NEW_VALUE=$(whiptail --inputbox "Enter Sync Level (0 - 511)" 20 60 "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     HIGH=$(( ((NEW_VALUE >> 8) & 0x01) + ($HIGH & 0xfe) ))
-	LOW=$((NEW_VALUE & 0xff))
+	  LOW=$((NEW_VALUE & 0xff))
     sed -i 830c\\$LOW settings/defaults/current.set
-	sed -i 831c\\$HIGH settings/defaults/current.set
+	  sed -i 831c\\$HIGH settings/defaults/current.set
   fi
+}
+
+#
+#
+do_colour_enable() {
+  CURRENT_VALUE=$(( $(sed -n 831p settings/defaults/current.set) ))
+  if [ "$(( (($CURRENT_VALUE >> 4) & 0x01) ))" -eq "1" ]; then
+    DEFAULT_NO="--defaultno"
+  else
+    DEFAULT_NO=""
+  fi
+  whiptail $DEFAULT_NO --yes-button "Enable" --no-button "Disable" --yesno "Colour Processing Enable/Disable" 10 50 3>&1 1>&2 2>&3
+  RET=$?
+  ON=$(( $CURRENT_VALUE & 0xEF ))
+  OFF=$(( $CURRENT_VALUE | 0x10 ))
+  if [ $RET -eq 1 ]; then
+    # NO / Disable Branch
+    sed -i 831c\\$OFF settings/defaults/current.set
+  elif [ $RET -eq 0 ]; then
+    # YES / Enable Branch
+    sed -i 831c\\$ON settings/defaults/current.set
+  fi
+}
+
+do_colour_brightness() {
+  CURRENT_VALUE=$(( $(sed -n 827p settings/defaults/current.set) ))
+  if [ "$CURRENT_VALUE" -ge 128 ]; then
+    CURRENT_VALUE=$(( $CURRENT_VALUE - 256 ))
+  fi
+  NEW_VALUE=$(whiptail --inputbox "Enter Y' Offset (-128 to 127)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    if [ "$NEW_VALUE" -lt "0" ]; then
+      NEW_VALUE=$(($NEW_VALUE + 256 ))
+      sed -i 827c\\$NEW_VALUE settings/defaults/current.set
+    else
+      sed -i 827c\\$NEW_VALUE settings/defaults/current.set
+    fi
+  fi
+}
+
+do_colour_contrast() {
+  CURRENT_VALUE=$(( $(sed -n 822p settings/defaults/current.set) ))
+  NEW_VALUE=$(whiptail --inputbox "Enter Y' Gain (0 to 255)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    sed -i 822c\\$NEW_VALUE settings/defaults/current.set
+  fi
+}
+
+do_colour_u_gain() {
+  UCOS_VALUE=$(( $(sed -n 823p settings/defaults/current.set) ))
+  if [ "$UCOS_VALUE" -ge 128 ]; then
+    UCOS_VALUE=$(( $UCOS_VALUE - 256 ))
+  fi
+  USIN_VALUE=$(( $(sed -n 825p settings/defaults/current.set) ))
+  if [ "$USIN_VALUE" -ge 128 ]; then
+    USIN_VALUE=$(( $USIN_VALUE - 256 ))
+  fi
+  folder_scripts
+  HUE=$(( $(python calculateHue.py $UCOS_VALUE $USIN_VALUE) ))
+  CURRENT_VALUE=$(( $(python calculateGain.py $UCOS_VALUE $USIN_VALUE) ))
+  cd ..
+  NEW_VALUE=$(whiptail --inputbox "Enter Pb gain (-128 to 127)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    folder_scripts
+    UCOS_VALUE=$(( $(python calculateCos.py $NEW_VALUE $HUE) ))
+    USIN_VALUE=$(( $(python calculateSin.py $NEW_VALUE $HUE) ))
+    cd ..
+    if [ "$UCOS_VALUE" -lt "0" ]; then
+      UCOS_VALUE=$(($UCOS_VALUE + 256 ))
+      sed -i 823c\\$UCOS_VALUE settings/defaults/current.set
+    else
+      sed -i 823c\\$UCOS_VALUE settings/defaults/current.set
+    fi
+    if [ "$USIN_VALUE" -lt "0" ]; then
+      USIN_VALUE=$(($USIN_VALUE + 256 ))
+      sed -i 825c\\$USIN_VALUE settings/defaults/current.set
+    else
+      sed -i 825c\\$USIN_VALUE settings/defaults/current.set
+    fi
+  fi
+}
+
+do_colour_v_gain() {
+  VCOS_VALUE=$(( $(sed -n 824p settings/defaults/current.set) ))
+  if [ "$VCOS_VALUE" -ge 128 ]; then
+    VCOS_VALUE=$(( $VCOS_VALUE - 256 ))
+  fi
+  VSIN_VALUE=$(( $(sed -n 826p settings/defaults/current.set) ))
+  if [ "$VSIN_VALUE" -ge 128 ]; then
+    VSIN_VALUE=$(( $VSIN_VALUE - 256 ))
+  fi
+  folder_scripts
+  HUE=$(( $(python calculateHue.py $VCOS_VALUE $((-1* $VSIN_VALUE)) ) ))
+  CURRENT_VALUE=$(( $(python calculateGain.py $VCOS_VALUE $((-1* $VSIN_VALUE))) ))
+  cd ..
+  NEW_VALUE=$(whiptail --inputbox "Enter Pr gain (-128 to 127)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    folder_scripts
+    VCOS_VALUE=$(( $(python calculateCos.py $NEW_VALUE $HUE) ))
+    VSIN_VALUE=$(( -1* $(python calculateSin.py $NEW_VALUE $HUE) ))
+    cd ..
+    if [ "$VCOS_VALUE" -lt "0" ]; then
+      VCOS_VALUE=$(($VCOS_VALUE + 256 ))
+      sed -i 824c\\$VCOS_VALUE settings/defaults/current.set
+    else
+      sed -i 824c\\$VCOS_VALUE settings/defaults/current.set
+    fi
+    if [ "$VSIN_VALUE" -lt "0" ]; then
+      VSIN_VALUE=$(($VSIN_VALUE + 256 ))
+      sed -i 826c\\$VSIN_VALUE settings/defaults/current.set
+    else
+      sed -i 826c\\$VSIN_VALUE settings/defaults/current.set
+    fi
+  fi
+}
+
+do_colour_hue() {
+  UCOS_VALUE=$(( $(sed -n 823p settings/defaults/current.set) ))
+  if [ "$UCOS_VALUE" -ge 128 ]; then
+    UCOS_VALUE=$(( $UCOS_VALUE - 256 ))
+  fi
+  USIN_VALUE=$(( $(sed -n 825p settings/defaults/current.set) ))
+  if [ "$USIN_VALUE" -ge 128 ]; then
+    USIN_VALUE=$(( $USIN_VALUE - 256 ))
+  fi
+  VCOS_VALUE=$(( $(sed -n 824p settings/defaults/current.set) ))
+  if [ "$VCOS_VALUE" -ge 128 ]; then
+    VCOS_VALUE=$(( $VCOS_VALUE - 256 ))
+  fi
+  VSIN_VALUE=$(( $(sed -n 826p settings/defaults/current.set) ))
+  if [ "$VSIN_VALUE" -ge 128 ]; then
+    VSIN_VALUE=$(( $VSIN_VALUE - 256 ))
+  fi
+  folder_scripts
+  CURRENT_VALUE=$(( $(python calculateHue.py $UCOS_VALUE $USIN_VALUE) ))
+  UGAIN=$(( $(python calculateGain.py $UCOS_VALUE $USIN_VALUE) ))
+  VGAIN=$(( $(python calculateGain.py $VCOS_VALUE $VSIN_VALUE) ))
+  cd ..
+  NEW_VALUE=$(whiptail --inputbox "Enter Hue angle (-90 to 90)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    folder_scripts
+    UCOS_VALUE=$(( $(python calculateCos.py $UGAIN $NEW_VALUE) ))
+    USIN_VALUE=$(( $(python calculateSin.py $UGAIN $NEW_VALUE) ))
+    VCOS_VALUE=$(( $(python calculateCos.py $VGAIN $NEW_VALUE) ))
+    VSIN_VALUE=$(( -1* $(python calculateSin.py $VGAIN $NEW_VALUE) ))
+    cd ..
+    if [ "$UCOS_VALUE" -lt "0" ]; then
+      UCOS_VALUE=$(($UCOS_VALUE + 256 ))
+      sed -i 823c\\$UCOS_VALUE settings/defaults/current.set
+    else
+      sed -i 823c\\$UCOS_VALUE settings/defaults/current.set
+    fi
+    if [ "$USIN_VALUE" -lt "0" ]; then
+      USIN_VALUE=$(($USIN_VALUE + 256 ))
+      sed -i 825c\\$USIN_VALUE settings/defaults/current.set
+    else
+      sed -i 825c\\$USIN_VALUE settings/defaults/current.set
+    fi
+    if [ "$VCOS_VALUE" -lt "0" ]; then
+      VCOS_VALUE=$(($VCOS_VALUE + 256 ))
+      sed -i 824c\\$VCOS_VALUE settings/defaults/current.set
+    else
+      sed -i 824c\\$VCOS_VALUE settings/defaults/current.set
+    fi
+    if [ "$VSIN_VALUE" -lt "0" ]; then
+      VSIN_VALUE=$(($VSIN_VALUE + 256 ))
+      sed -i 826c\\$VSIN_VALUE settings/defaults/current.set
+    else
+      sed -i 826c\\$VSIN_VALUE settings/defaults/current.set
+    fi
+  fi
+}
+
+do_colour_menu() {
+  while true; do
+    FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Colour Menu" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+  	"7.1 Enable/Disable" "Turn on/off colour expansion" \
+  	"7.2 Y' Offset" "Change picture brightness" \
+    "7.3 Y' Gain" "Change picture contrast" \
+    "7.4 Pb/U Gain" "Change blue-luma gain" \
+    "7.5 Pr/V Gain" "Change red-luma gain" \
+    "7.6 Hue/Tint" "Change colour hue/tint" \
+    "7.7 Advanced Menu" "Change raw colour components" \
+    3>&1 1>&2 2>&3)
+    RET=$?
+    if [ $RET -eq 1 ]; then
+      return 0
+    elif [ $RET -eq 0 ]; then
+      case "$FUN" in
+        7.1\ *) do_colour_enable ;;
+  	    7.2\ *) do_colour_brightness ;;
+        7.3\ *) do_colour_contrast ;;
+        7.4\ *) do_colour_u_gain ;;
+        7.5\ *) do_colour_v_gain ;;
+        7.6\ *) do_colour_hue ;;
+        7.7\ *) do_colour_advanced_menu ;;
+        *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
+      esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+    fi
+  done
+}
+
+#
+#
+do_colour_u_cos_gain() {
+  CURRENT_VALUE=$(( $(sed -n 823p settings/defaults/current.set) ))
+  if [ "$CURRENT_VALUE" -ge 128 ]; then
+    CURRENT_VALUE=$(( $UCOS_VALUE - 256 ))
+  fi
+  NEW_VALUE=$(whiptail --inputbox "Enter Pb Cos gain (-128 to 127)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    if [ "$NEW_VALUE" -lt "0" ]; then
+      NEW_VALUE=$(($NEW_VALUE + 256 ))
+      sed -i 823c\\$NEW_VALUE settings/defaults/current.set
+    else
+      sed -i 823c\\$NEW_VALUE settings/defaults/current.set
+    fi
+  fi
+}
+
+do_colour_v_cos_gain() {
+  CURRENT_VALUE=$(( $(sed -n 824p settings/defaults/current.set) ))
+  if [ "$CURRENT_VALUE" -ge 128 ]; then
+    CURRENT_VALUE=$(( $CURRENT_VALUE - 256 ))
+  fi
+  NEW_VALUE=$(whiptail --inputbox "Enter Pr Cos gain (-128 to 127)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    if [ "$NEW_VALUE" -lt "0" ]; then
+      NEW_VALUE=$(($NEW_VALUE + 256 ))
+      sed -i 824c\\$NEW_VALUE settings/defaults/current.set
+    else
+      sed -i 824c\\$NEW_VALUE settings/defaults/current.set
+    fi
+  fi
+}
+
+do_colour_u_sin_gain() {
+  CURRENT_VALUE=$(( $(sed -n 825p settings/defaults/current.set) ))
+  if [ "$CURRENT_VALUE" -ge 128 ]; then
+    CURRENT_VALUE=$(( $CURRENT_VALUE - 256 ))
+  fi
+  NEW_VALUE=$(whiptail --inputbox "Enter Pb Sin gain (-128 to 127)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    if [ "$NEW_VALUE" -lt "0" ]; then
+      NEW_VALUE=$(($NEW_VALUE + 256 ))
+      sed -i 825c\\$NEW_VALUE settings/defaults/current.set
+    else
+      sed -i 825c\\$NEW_VALUE settings/defaults/current.set
+    fi
+  fi
+}
+
+do_colour_v_sin_gain() {
+  CURRENT_VALUE=$(( $(sed -n 826p settings/defaults/current.set) ))
+  if [ "$CURRENT_VALUE" -ge 128 ]; then
+    CURRENT_VALUE=$(( $CURRENT_VALUE - 256 ))
+  fi
+  NEW_VALUE=$(whiptail --inputbox "Enter Pr Sin gain (-128 to 127)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    if [ "$NEW_VALUE" -lt "0" ]; then
+      NEW_VALUE=$(($NEW_VALUE + 256 ))
+      sed -i 826c\\$NEW_VALUE settings/defaults/current.set
+    else
+      sed -i 826c\\$NEW_VALUE settings/defaults/current.set
+    fi
+  fi
+}
+
+do_colour_u_offset() {
+  CURRENT_VALUE=$(( $(sed -n 828p settings/defaults/current.set) ))
+  if [ "$CURRENT_VALUE" -ge 128 ]; then
+    CURRENT_VALUE=$(( $CURRENT_VALUE - 256 ))
+  fi
+  NEW_VALUE=$(whiptail --inputbox "Enter Pb Offset (-128 to 127)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    if [ "$NEW_VALUE" -lt "0" ]; then
+      NEW_VALUE=$(($NEW_VALUE + 256 ))
+      sed -i 828c\\$NEW_VALUE settings/defaults/current.set
+    else
+      sed -i 828c\\$NEW_VALUE settings/defaults/current.set
+    fi
+  fi
+}
+
+do_colour_v_offset() {
+  CURRENT_VALUE=$(( $(sed -n 829p settings/defaults/current.set) ))
+  if [ "$CURRENT_VALUE" -ge 128 ]; then
+    CURRENT_VALUE=$(( $CURRENT_VALUE - 256 ))
+  fi
+  NEW_VALUE=$(whiptail --inputbox "Enter Pr Offset (-128 to 127)" 20 60 -- "$CURRENT_VALUE" 3>&1 1>&2 2>&3)
+  if [ $? -eq 0 ]; then
+    if [ "$NEW_VALUE" -lt "0" ]; then
+      NEW_VALUE=$(($NEW_VALUE + 256 ))
+      sed -i 829c\\$NEW_VALUE settings/defaults/current.set
+    else
+      sed -i 829c\\$NEW_VALUE settings/defaults/current.set
+    fi
+  fi
+}
+
+do_colour_advanced_menu() {
+  while true; do
+    FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Advanced Colour Menu" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+  	"7.2.1 Enable/Disable" "Turn on/off colour expansion" \
+  	"7.2.2 Y' Offset" "Change picture brightness" \
+    "7.2.3 Y' Gain" "Change picture contrast" \
+    "7.2.4 Pb/U Cos Gain" "Change blue-luma gain" \
+    "7.2.5 Pr/V Cos Gain" "Change red-luma gain" \
+    "7.2.6 Pb/U Sin Gain" "Change blue to red gain" \
+    "7.2.7 Pr/V Sin Gain" "Change red to blue gain" \
+    "7.2.8 Pb/U Offset" "Change blue-luma offset" \
+    "7.2.9 Pr/V Offset" "Change red-luma offset" \
+    3>&1 1>&2 2>&3)
+    RET=$?
+    if [ $RET -eq 1 ]; then
+      return 0
+    elif [ $RET -eq 0 ]; then
+      case "$FUN" in
+        7.2.1\ *) do_colour_enable ;;
+  	    7.2.2\ *) do_colour_brightness ;;
+        7.2.3\ *) do_colour_contrast ;;
+        7.2.4\ *) do_colour_u_cos_gain ;;
+        7.2.5\ *) do_colour_v_cos_gain ;;
+        7.2.6\ *) do_colour_u_sin_gain ;;
+        7.2.7\ *) do_colour_v_sin_gain ;;
+        7.2.8\ *) do_colour_u_offset ;;
+        7.2.9\ *) do_colour_v_offset ;;
+        *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
+      esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+    fi
+  done
 }
 
 #
@@ -520,8 +851,6 @@ line_format(){
   done <"$1"  # Selection input argument as file for read
 }
 
-#
-#
 do_save() {
 
   NEW_VALUE=$(whiptail --inputbox "Enter Setting Name" 8 $WT_WIDTH "default" 3>&1 1>&2 2>&3)
@@ -624,15 +953,16 @@ sleep 0.25
 bash adaptive_deinterlace.sh > /dev/null 2>&1 &
 while true; do
   FUN=$(whiptail --title "Raspberry Pi GB8200 Controller v0.3" --menu "Set-up Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
-  "1 HELP" "Usage Guide" \
-	"2 De-interlace" "Dynamic De-interlace Settings" \
-  "3 Geometry" "Shift output image and blanking" \
-  "4 Coast" "Input sync & sampling settings" \
-  "5 H/V Scaling" "Change output canvas scaling" \
-  "6 Sync Level" "Change output SOG/SOL sync level" \
-  "7 Delete Settings" "Delete a stored settings file" \
-  "8 Save Settings" "Save current settings to file" \
-  "9 Load Settings" "Load previous settings from file" \
+  "1  HELP" "Usage Guide" \
+	"2  De-interlace" "Dynamic De-interlace Settings" \
+  "3  Geometry" "Shift output image and blanking" \
+  "4  Coast" "Input sync & sampling settings" \
+  "5  H/V Scaling" "Change output canvas scaling" \
+  "6  Sync Level" "Change output SOG/SOL sync level" \
+  "7  Colour" "Change colour settigns" \
+  "8  Delete Settings" "Delete a stored settings file" \
+  "9  Save Settings" "Save current settings to file" \
+  "10 Load Settings" "Load previous settings from file" \
   3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
@@ -645,9 +975,10 @@ while true; do
 	  4\ *) do_input_capture_menu ;;
 	  5\ *) do_hv_scalling_menu ;;
 	  6\ *) do_sync_level ;;
-	  7\ *) do_delete ;;
-	  8\ *) do_save ;;
-	  9\ *) do_load ;;
+    7\ *) do_colour_menu ;;
+	  8\ *) do_delete ;;
+	  9\ *) do_save ;;
+	  10\ *) do_load ;;
       *) whiptail --msgbox "Programmer error: unrecognised option" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   else
