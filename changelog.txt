@@ -14,6 +14,8 @@ Version 0.3
 		-RGBHV 720p 50 to 60Hz modes
 		-RGBHV 800x600 50 to 60 Hz scaled 567i mode
 		-RGBHV 320x240p 60 to 120Hz Double Scan mode (for 31kHz CRTs)
+    -RGBHV 1280x960 60Hz and 50 to 60Hz modes
+    -RGBHV 1280x1024 60Hz and 50 to 60Hz modes
 	Sync Level Adjust added, used for component YPbPr output
 	Spelling in Menu fixed "Rasberry" -> "Raspberry"
 	Version added to Menu Title (v0.3)
