@@ -58,7 +58,15 @@ patch -bN -F 6 $DIR/.profile $DIR/scripts/patch.profile
 echo -e "\nReplace /boot/config.txt for Luma output settings:"
 sudo cp /boot/config.txt /boot/config.txt.bak
 sudo rm /boot/config.txt
-sudo cp $DIR/scripts/config.txt /boot/config.txt
+# Check for Device tree usage
+DEVTREE=$(ls /proc | grep -c device-tree)
+if [ "$DEVTREE" = "0" ]; then
+    echo -e "No Device Tree detected"
+	sudo cp $DIR/scripts/config.txt /boot/config.txt
+else
+    echo -e "Device Tree detected"
+	sudo cp $DIR/scripts/config-device-tree.txt /boot/config.txt
+fi
 
 # Reboot
 echo -e "\nNow rebooting system"

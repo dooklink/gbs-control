@@ -1,0 +1,49 @@
+# /boot/config.txt for gbs-control
+# Replaced to ensure correct composite output
+
+# Device Tree Module Loading Additions
+dtparam=i2c_arm=on
+
+sdtv_mode=2
+sdtv_disable_colourburst=1
+overscan_left=30
+overscan_right=30
+overscan_top=44
+overscan_bottom=44
+disable_overscan=0
+
+################################################################################
+##  Standard Definition Video Settings
+################################################################################
+
+## sdtv_mode
+##     defines the TV standard for composite output
+##
+##     Value    Description
+##     -------------------------------------------------------------------------
+##     0        Normal NTSC (Default)
+##     1        Japanese version of NTSC - no pedestal
+##     2        Normal PAL
+##     3        Brazilian version of PAL - 525/60 rather than 625/50, different
+##              subcarrier
+##
+
+## sdtv_aspect
+##     defines the aspect ratio for composite output
+##
+##     Value    Description
+##     -------------------------------------------------------------------------
+##     1        4:3 (Default)
+##     2        14:9
+##     3        16:9
+##
+
+## sdtv_disable_colourburst
+##     Disables colour burst on composite output. The picture will be
+##     monochrome, but possibly sharper
+##
+##     Value    Description
+##     -------------------------------------------------------------------------
+##     0        Colour burst is enabled (Default)
+##     1        Colour burst is disabled
+##

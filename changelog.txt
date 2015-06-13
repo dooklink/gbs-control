@@ -1,6 +1,29 @@
 gbs-control change log
 ======================
 
+Version 0.3
+  
+  Colour adjustment menu - Brightness, Contrast, Saturation and Hue
+  Dynamic De-interlace - detect and change de-interlace mode automatically
+	New Settings Added
+		-YPbPr 1080p 50Hz modes
+		-YPbPr 720p 50Hz modes
+		-YPbPr 720p 60Hz modes
+		-RGBHV 1080p 50 to 60Hz modes
+		-RGBHV 720p 60Hz modes
+		-RGBHV 720p 50 to 60Hz modes
+		-RGBHV 800x600 50 to 60 Hz scaled 567i mode
+    -RGBHV 1280x960 60Hz and 50 to 60Hz modes
+    -RGBHV 1280x1024 60Hz and 50 to 60Hz modes
+		-RGBHV 320x240p 60 to 120Hz Double Scan mode (for 31kHz CRTs)
+    -RGBHV 320x240p from 640x480p 60Hz downscaling mode (for 15kHz CRTs)
+	Sync Level Adjust added, used for component YPbPr output
+	Spelling in Menu fixed "Rasberry" -> "Raspberry"
+	Version added to Menu Title (v0.3)
+	Load and Delete menus now use whiptail interface, allows for scroll bar
+	Fixed Right Ctrl hot-key in Triggerhappy con-fig
+	Device Tree support added to install script (kernel 3.18+)
+
 Version 0.2
 	
 	New Settings Added
