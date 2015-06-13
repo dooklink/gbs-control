@@ -10,7 +10,7 @@ sudo apt-get update
 sudo apt-get install -y i2c-tools libi2c-dev python-smbus
 
 # Get latest stable version from GitHub
-echo -e "\nDownloading current release version:"
+echo -e "\nDownloading current master version:"
 cd $DIR
 wget https://raw.githubusercontent.com/dooklink/gbs-control/master/gbs-control.zip
 
