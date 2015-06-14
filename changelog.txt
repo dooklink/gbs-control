@@ -1,6 +1,11 @@
 gbs-control change log
 ======================
 
+Version 0.3.1
+
+  Fix Rev 1 board detection and I2C port usage
+    Thanks to "yxkalle" for reporting this issue
+
 Version 0.3
   
   Colour adjustment menu - Brightness, Contrast, Saturation and Hue

@@ -38,15 +38,15 @@ sudo patch -bN -F 6 /etc/default/triggerhappy $DIR/scripts/patch.triggerhappy
 
 # Move triggerhappy files to /etc/triggerhappy/triggers.d
 echo -e "\nCopy triggerhappy hotkey conf files:"
-REVISION=$(cat /proc/cpuinfo | grep revision)
+REVISION=$(cat /proc/cpuinfo | grep Revision)
 LEN=${#REVISION}
-POS=$((LEN -1))
+POS=$((LEN -4))
 REV=${REVISION:POS}
-if [ "$REV" = "0" ] || [ "$REV" = "1" ]; then
-    echo -e "Revision 1 detected"
+if [ "$REV" = "Beta" ] || [ "$REV" = "0002" ] || [ "$REV" = "0003" ]; then
+  echo -e "Revision 1 detected"
 	sudo cp thd/triggerhappy_rev1/* /etc/triggerhappy/triggers.d/
 else
-    echo -e "Revision 2 detected"
+  echo -e "Revision 2 detected"
 	sudo cp thd/triggerhappy/* /etc/triggerhappy/triggers.d/
 fi
 

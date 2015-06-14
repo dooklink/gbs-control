@@ -2,11 +2,11 @@
 END=$(sed -n 1p /home/pi/settings/defaults/end)
 while [ "$END" == "false" ]; do
   END=$(sed -n 1p /home/pi/settings/defaults/end)
-  REVISION=$(cat /proc/cpuinfo | grep revision)
+  REVISION=$(cat /proc/cpuinfo | grep Revision)
   LEN=${#REVISION}
-  POS=$((LEN -1))
+  POS=$((LEN -4))
   REV=${REVISION:POS}
-  if [ "$REV" = "0" ] || [ "$REV" = "1" ]; then
+  if [ "$REV" = "Beta" ] || [ "$REV" = "0002" ] || [ "$REV" = "0003" ]; then
     I2C_PORT=$((0))
   else
     I2C_PORT=$((1))
